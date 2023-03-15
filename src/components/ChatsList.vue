@@ -11,7 +11,11 @@
 </template>
 
 <script>
+export default {
+  name: 'ChatsList',
+  props: {
 
+  }
 </script>
 
 <style scoped>
