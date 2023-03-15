@@ -9,7 +9,12 @@
 </template>
 
 <script>
+export default {
+  name: 'MessagesList',
+  props: {
 
+  }
+}
 </script>
 
 <style scoped>
