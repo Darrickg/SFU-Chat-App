@@ -14,7 +14,12 @@
 </template>
 
 <script>
+export default {
+  name: 'DiscussionNav',
+  props: {
 
+  }
+}
 </script>
 
 <style scoped>
