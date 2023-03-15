@@ -11,7 +11,12 @@
 </template>
 
 <script>
+export default {
+  name: 'DiscussionsList',
+  props: {
 
+  }
+}
 </script>
 
 <style scoped>
