@@ -7,11 +7,16 @@
         ...whatever else we come up with
 -->
 <template>
-    
+    <h1>It work</h1>
 </template>
 
 <script>
+export default {
+  name: 'AppNav',
+  props: {
 
+  }
+}
 </script>
 
 <style scoped>
