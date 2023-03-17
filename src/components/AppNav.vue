@@ -7,7 +7,7 @@
         ...whatever else we come up with
 -->
 <template>
-    <h1>It work</h1>
+    <h1>It works</h1>
 </template>
 
 <script>
