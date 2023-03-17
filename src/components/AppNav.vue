@@ -7,7 +7,12 @@
         ...whatever else we come up with
 -->
 <template>
-    <h1>It works</h1>
+    <nav class="container flex flex-wrap bg-sfu-dark-red">
+      <img alt="SFU logo" src="@/assets/SFU_block.png" class="h-14 w-auto">
+      <a href="" class="text-white hover:text-sfu-dark-red hover:bg-white">Home</a>
+      <a href="" class="text-white hover:text-sfu-dark-red hover:bg-white">Settings</a>
+      <a href="" class="text-white hover:text-sfu-dark-red hover:bg-white">Log Out</a>
+    </nav>
 </template>
 
 <script>

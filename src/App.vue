@@ -1,5 +1,4 @@
 <template>
-  <img alt="SFU logo" src="./assets/SFU_block.png">
   <AppNav>
   </AppNav>
 </template>
