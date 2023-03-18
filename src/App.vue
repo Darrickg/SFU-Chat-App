@@ -1,15 +1,19 @@
 <template>
   <AppNav>
   </AppNav>
+  <DiscussionNav>
+  </DiscussionNav>
 </template>
 
 <script>
 import AppNav from './components/AppNav.vue'
+import DiscussionNav from './components/DiscussionNav.vue'
 
 export default {
   name: 'App',
   components: {
-    AppNav
+    AppNav,
+    DiscussionNav
   }
 }
 </script>
