@@ -3,6 +3,8 @@
   </AppNav>
   <DiscussionNav>
   </DiscussionNav>
+  <MessagesList>
+  </MessagesList>
   <MessageForm>
   </MessageForm>
 </template>
@@ -11,13 +13,15 @@
 import AppNav from './components/AppNav.vue'
 import DiscussionNav from './components/DiscussionNav.vue'
 import MessageForm from './components/MessageForm'
+import MessagesList from './components/MessagesList'
 
 export default {
   name: 'App',
   components: {
     AppNav,
     DiscussionNav,
-    MessageForm
+    MessageForm,
+    MessagesList
   }
 }
 </script>
