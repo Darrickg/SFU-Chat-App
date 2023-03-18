@@ -7,6 +7,7 @@
         ...whatever else we come up with
 -->
 <template>
+    <button>Account</button>
     <nav class="container flex flex-wrap bg-sfu-dark-red">
       <img alt="SFU logo" src="@/assets/SFU_block.png" class="h-14 w-auto">
       <a href="" class="text-white hover:text-sfu-dark-red hover:bg-white">Home</a>
