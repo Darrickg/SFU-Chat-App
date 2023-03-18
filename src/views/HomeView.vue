@@ -1,16 +1,15 @@
 <template>
-  <AppNav>
-  </AppNav>
+  <ChatsList/>
 </template>
 
 <script>
 
-import AppNav from '@/components/AppNav.vue'
+import ChatsList from '@/components/ChatsList.vue'
 
 export default {
   name: 'HomeView',
   components: {
-    AppNav
+    ChatsList
   }
 }
 </script>

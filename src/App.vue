@@ -1,27 +1,17 @@
 <template>
   <AppNav>
   </AppNav>
-  <DiscussionNav>
-  </DiscussionNav>
-  <MessagesList>
-  </MessagesList>
-  <MessageForm>
-  </MessageForm>
+  <router-view/>
 </template>
 
 <script>
 import AppNav from './components/AppNav.vue'
-import DiscussionNav from './components/DiscussionNav.vue'
-import MessageForm from './components/MessageForm'
-import MessagesList from './components/MessagesList'
+
 
 export default {
   name: 'App',
   components: {
     AppNav,
-    DiscussionNav,
-    MessageForm,
-    MessagesList
   }
 }
 </script>

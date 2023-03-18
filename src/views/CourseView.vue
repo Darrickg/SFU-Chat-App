@@ -1,16 +1,15 @@
 <template>
-  <AppNav>
-  </AppNav>
+  <DiscussionsList/>
 </template>
 
 <script>
 
-import AppNav from '@/components/AppNav.vue'
+import DiscussionsList from '@/components/DiscussionsList.vue'
 
 export default {
   name: 'CourseView',
   components: {
-    AppNav
+    DiscussionsList
   }
 }
 </script>

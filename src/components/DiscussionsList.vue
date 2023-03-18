@@ -7,7 +7,9 @@
     Next to each course is direct link to the 3 most recent discussions? Would be convenient
 -->
 <template>
-    
+    <ul>
+      <li>write stuff</li>
+    </ul>
 </template>
 
 <script>
