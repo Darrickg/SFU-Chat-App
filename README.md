@@ -32,3 +32,13 @@ npx tsc server.ts
 ```
 node server.js
 ```
+
+## Docker build
+```
+docker build . -t cmpt372/group3
+```
+
+## Docker run
+```
+docker run -d -p 8080:8080 cmpt372/group3
+```
