@@ -28,6 +28,10 @@ export default {
 </template>
 
 <style scoped>
+h1 {
+    font-weight: bold;
+}
+
 .custom-input {
     appearance: none;
     background-color: transparent;
