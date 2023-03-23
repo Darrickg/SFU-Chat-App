@@ -2,5 +2,15 @@ import { createApp } from 'vue'
 import App from './App.vue'
 import './assets/tailwind.css'
 import router from './router'
+import vue3GoogleLogin from 'vue3-google-login'
 
-createApp(App).use(router).mount('#app')
+const app=createApp(App)
+
+
+
+let googleClientID='113462210670-5i19fcfbjs0hiuknf7qqjcq2kn8voart.apps.googleusercontent.com';
+app.use(vue3GoogleLogin,{
+    clientId:googleClientID
+})
+
+app.use(router).mount('#app')
