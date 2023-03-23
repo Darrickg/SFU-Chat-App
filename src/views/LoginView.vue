@@ -1,13 +1,22 @@
 <script>
-import LoginBox from './Components/LoginBox.vue'
+import LoginBox from '@/components/Login/LoginBox.vue'
 
 export default {
-    name: "LoginPage",
+    name: "LoginView",
     components: {
         LoginBox,
     }
 }
 </script>
+<script setup>
+import {decodeCredential} from 'vue3-google-login'
+const googleCallback=(response)=>{
+  const userData = decodeCredential(response.credential)
+  const userEmail=userData.email;
+  const userName=userData.given_name;
+}
+</script>
+
 
 <template>
     <div class="flex-container">
@@ -17,6 +26,9 @@ export default {
         <br />
         <br />
         <button>Sign in as guest</button>
+        <a href="https://cas.sfu.ca/cas/login?service=http%3A%2F%2Flocalhost:8080%2Flogin"><button>SFU Login<br>(We still need permission)</button></a>
+        <a href="https://cas.sfu.ca/cas/logout?service=http%3A%2F%2Flocalhost%A8080%2F"><button>SFU Logout</button></a>
+        <GoogleLogin :callback="googleCallback"/>
     </div>
 </template>
 
@@ -27,7 +39,7 @@ export default {
     padding: 30px;
 }
 
-button {
+button{
     display: inline-flex;
     align-items: center;
     justify-content: center;
