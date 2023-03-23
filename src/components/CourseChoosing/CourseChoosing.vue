@@ -1,73 +1,163 @@
 <template>
-  <h3>Choose your department and courses</h3>
+<div class="flex flex-col align-center gap-4">
+  <h3 class="text-md-h4">Choose your department and courses</h3>
+  <v-autocomplete
+      multiple
+      clearable
+      chips
+      :loading="loading"
+      label="Select department:"
+      v-model="departments"
+      :items="availableDepartment"
+      class="w-1/2"
+      @blur="getAvailableCourses"
+  ></v-autocomplete>
+  <div v-for="dept in departments" >
+    <v-autocomplete v-if="this.getChosenCourse(dept)"
+        multiple
+        clearable
+        chips
+        :loading="loading"
+        label="Select courses:"
+        :value="this.getChosenCourse(dept).getCourses()"
+        @change="addCourse($event.target.value)"
+        :items="getChosenCourse(dept).getCourses()"
+        class="w-1/2"
+    >
+      <template v-slot:item="{ item }">
+        <span>{{ item.courseDept + " " + item.courseNumber }}</span>
+      </template>
+    </v-autocomplete>
+  </div>
+</div>
 </template>
 
 <script>
 import {Courses} from "@/functions/sfuAPI/courses";
-import {getTermInfo} from "@/functions/sfuAPI/termInfoFunctions";
+import {getDepartmentName, getTermInfo} from "@/functions/sfuAPI/termInfoFunctions";
+import {VAutocomplete, VCombobox} from "vuetify/components";
+import {de} from "vuetify/locale";
 
 export default {
   name: "CourseChoosing",
+  components: {
+    VAutocomplete
+  },
   data: function () {
     return {
-      courses: [Courses],
+      chosenCourses: [Courses],
+      availableCourses: [Courses],
+      departments:[],
+      availableDepartment:[],
+      loading: true,
+      courseLoading: true
     }
   },
   computed: {
-    /**
-     * @return {string[]}
-     *
-     **/
-    getChosenDepartments: function () {
-      return this.courses.map((course) => {
-        return course.prototype.getDepartment();
-      });
-    },
-    getChosenCourse: function (department) {
-      return this.getCourse(department);
-    },
+
+
+  },
+  beforeMount() {
+    this.getAvailableDepartment();
   },
   methods: {
+    getChosenCourse: function (department) {
+      return this.getListCourse(department);
+    },
+    /**
+     * Queries the SFU API for the departments available in the given term
+     * @return {string[]}
+     */
+    getAvailableDepartment: function () {
+      this.loading = true;
+      let departments = [String];
+      getDepartmentName("Spring 2023").then((data) => {
+        return data.map((department) => {
+          return department.abbr;
+        });
+      }).then((data) => {
+        this.availableDepartment = data;
+        console.log(data);
+      });
+      this.loading = false;
+      this.availableDepartment= departments;
+    },
+
+    addDepartment: function (department) {
+      if (!this.departments.includes(department)) {
+        this.departments.push(department);
+      }
+    },
     /**
      * Queries the SFU API for the courses available in the given term, based on the chosen departments
      * @return {Courses[]}
      */
-    getAvailableCourses: function () {
-      let availableCourses = [];
-      for (let department in this.getChosenDepartments) {
+    getAvailableCourses: async function () {
+      this.courseLoading = true;
+      for(let department of this.departments){
+        console.log(department);
+        if(this.availableCourses.map(course=>course.prototype.getDepartment()).includes(department)){
+          continue;
+        }
         let courses = new Courses(department);
-        getTermInfo("Spring 2023", [department]).finally(
-            (data) => courses.addCourses(data)
+        getTermInfo("Spring 2023", [department]).then(
+            (data) => {
+              console.log(data);
+              courses.addCourses(data)
+            }
         );
-        availableCourses.push(courses);
+        this.availableCourses.push(courses);
       }
-      return this.getAvailableCourses;
+      this.courseLoading = false;
     },
 
     getCourses: function(){
-      return this.courses;
+      return this.chosenCourses;
     },
-    getCourse: function (department) {
-      let course = this.courses.filter((course) => {
+    /**
+     * @param {string} department
+     * @return {Courses}
+     */
+    getListCourse: function (department) {
+      let course = this.chosenCourses.filter((course) => {
         return course.prototype.getDepartment() === department;
       });
-      if (course.length === 0) {
-        throw new Error("Course not found");
-      }
       return course[0];
     },
+
+    /**
+     * @param event
+     */
+    changeCourse: function(event){
+      let course = event.target.value;
+      let department = course.courseDept;
+      let courseExist = this.getListCourse(department).getCourses().includes(course);
+      if(courseExist){
+        this.removeCourse(course);
+      }else{
+        this.addCourse(course);
+      }
+
+    },
+
     /**
      * @param {TermInfo} newCourse
      */
     addCourse: function(newCourse){
-      this.getCourse(newCourse.courseDept)
-          .addCourse(newCourse);
+      let department = this.getListCourse(newCourse.courseDept);
+      if(!department){
+        department = new Courses(newCourse.courseDept);
+      }
+      department.prototype.addCourse(newCourse);
+      if(!department){
+        this.getCourses().push(department);
+      }
     },
     /**
      * @param {TermInfo} removedCourse
      */
     removeCourse: function(removedCourse){
-      this.getCourse(removedCourse.courseDept).prototype.removeCourse(removedCourse);
+      this.getListCourse(removedCourse.courseDept).prototype.removeCourse(removedCourse);
     }
 
 

@@ -9,6 +9,11 @@ export class Courses{
     }
 
     getDepartment(){return this.department}
+
+    /**
+     *
+     * @returns {TermInfo[]} courses
+     */
     getCourses(){return this.courses}
 
     /**
@@ -19,7 +24,7 @@ export class Courses{
     /**
      * @param {TermInfo[]} courses
      */
-    addCourses(courses){this.courses = this.courses.concat(courses)}
+    addCourses(courses){this.courses = courses}
 
     /**
      * @param {TermInfo} course

@@ -1,16 +1,19 @@
 <template>
-  <AppNav>
-  </AppNav>
-  <router-view/>
+<!--  <AppNav>-->
+<!--  </AppNav>-->
+<!--  <router-view/>-->
+  <CourseChoosing></CourseChoosing>
 </template>
 
 <script>
 import AppNav from './components/AppNav.vue'
+import CourseChoosing from "@/components/CourseChoosing/CourseChoosing.vue";
 
 
 export default {
   name: 'App',
   components: {
+    CourseChoosing,
     AppNav,
   }
 }
