@@ -13,7 +13,7 @@ import {decodeCredential} from 'vue3-google-login'
 const googleCallback=(response)=>{
   const userData = decodeCredential(response.credential)
   const userEmail=userData.email;
-  const userName=userData.given_name;
+  const userName=userData.given_name; 
 }
 </script>
 
