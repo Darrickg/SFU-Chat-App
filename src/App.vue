@@ -1,8 +1,7 @@
 <template>
-<!--  <AppNav>-->
-<!--  </AppNav>-->
-<!--  <router-view/>-->
-  <CourseChoosing></CourseChoosing>
+  <AppNav>
+  </AppNav>
+  <router-view/>
 </template>
 
 <script>
