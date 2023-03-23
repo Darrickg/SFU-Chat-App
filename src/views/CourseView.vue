@@ -4,7 +4,7 @@
 
 <script>
 
-import DiscussionsList from '@/components/DiscussionsList.vue'
+import DiscussionsList from '@/components/Discussion/DiscussionsList.vue'
 
 export default {
   name: 'CourseView',
