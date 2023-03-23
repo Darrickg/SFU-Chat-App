@@ -50,7 +50,7 @@ h1 {
 .submit-button {
     display: inline-block;
     padding: 10px 20px;
-    background-color: #4CAF50;
+    background-color: #4b5563;
     color: white;
     font-size: 16px;
     border: none;
@@ -61,7 +61,8 @@ h1 {
 }
 
 .submit-button:hover {
-    background-color: #3e8e41;
+    background-color: white;
+    color:#4b5563;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.3);
 }
 

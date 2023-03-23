@@ -25,10 +25,10 @@ const googleCallback=(response)=>{
         </div>
         <br />
         <br />
-        <button>Sign in as guest</button>
-        <a href="https://cas.sfu.ca/cas/login?service=http%3A%2F%2Flocalhost:8080%2Flogin"><button>SFU Login<br>(We still need permission)</button></a>
-        <a href="https://cas.sfu.ca/cas/logout?service=http%3A%2F%2Flocalhost%A8080%2F"><button>SFU Logout</button></a>
+        <button class="text-white bg-gray-600 hover:text-gray-600 hover:bg-white my-2 mt-5">Sign in as guest</button>
         <GoogleLogin :callback="googleCallback"/>
+        <a href="https://cas.sfu.ca/cas/login?service=http%3A%2F%2Flocalhost:8080%2Flogin"><button class="bg-sfu-dark-red hover:text-sfu-dark-red hover:bg-white my-2">SFU Login<br>(We still need permission)</button></a>
+        <a href="https://cas.sfu.ca/cas/logout?service=http%3A%2F%2Flocalhost%A8080%2F"><button class="bg-sfu-dark-red hover:text-sfu-dark-red hover:bg-white my-2">SFU Logout</button></a>
     </div>
 </template>
 
@@ -44,7 +44,6 @@ button{
     align-items: center;
     justify-content: center;
     padding: 10px 20px;
-    background-color: #4CAF50;
     color: white;
     font-size: 16px;
     border: none;
@@ -59,7 +58,6 @@ button{
 }
 
 button:hover {
-    background-color: #3e8e41;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.3);
 }
 
