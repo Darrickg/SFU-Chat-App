@@ -1,15 +1,15 @@
 <template>
-  <ChatsList/>
+  <CourseList/>
 </template>
 
 <script>
 
-import ChatsList from '@/components/ChatsList.vue'
+import CourseList from '@/components/CourseList.vue'
 
 export default {
   name: 'HomeView',
   components: {
-    ChatsList
+    CourseList
   }
 }
 </script>

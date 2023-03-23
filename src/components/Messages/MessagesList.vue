@@ -5,7 +5,7 @@
     Profs/TAs can delete any messages
 -->
 <template>
-  <ul v-for="message in messages" :key="message.id" class="container flex flex-wrap bg-gray-100">
+  <ul v-for="message in messages" :key="message.id" class="container flex flex-wrap bg-gray-100 mx-10 px-20">
       <li class="text-black">
         <p>{{message.content}}</p>
         <button>Reply</button>
