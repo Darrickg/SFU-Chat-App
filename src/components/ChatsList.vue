@@ -9,7 +9,7 @@
 <template>
     <ul v-for="course in courses" :key="course.id" class="container text-white bg-gray-800">
       <li class="hover:text-gray-600 hover:bg-white">
-        <router-link to="/cmpt376">{{course.name}}</router-link></li>
+        <router-link to="/cmpt372">{{course.name}}</router-link></li>
     </ul>
 </template>
 
