@@ -26,8 +26,8 @@ const googleCallback=(response)=>{
         <br />
         <br />
         <button>Sign in as guest</button>
-        <a href="https://cas.sfu.ca/cas/login?service=http%3A%2F%2Flocalhost:8080%2Flogin"><button>SFU Login<br>(We still need permission)</button></a>
-        <a href="https://cas.sfu.ca/cas/logout?service=http%3A%2F%2Flocalhost%A8080%2F"><button>SFU Logout</button></a>
+        <a href="https://cas.sfu.ca/cas/login?service=http%3A%2F%2F34.130.237.234%2F"><button>SFU Login<br>(We still need permission)</button></a>
+        <a href="https://cas.sfu.ca/cas/logout?service=http%3A%2F%2F34.130.237.234%2F"><button>SFU Logout</button></a>
         <GoogleLogin :callback="googleCallback"/>
     </div>
 </template>
