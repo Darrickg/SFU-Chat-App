@@ -13,9 +13,9 @@
           <p v-text="isReply(message.reply)[1]"></p>
         </div>
         <p :id="'text'+message.id">{{message.text}}</p>
-        <p>{{message.email}}</p>
-        <button :id="'reply'+message.id">Reply</button>
-        <button v-on:click="edit(message.id)" :id="'edit'+message.id" v-if="ownMessage">✎</button>
+        <p :id="'author'+message.id">{{message.email}}</p>
+        <button v-on:click='openTextarea(message.id,"reply")' :id="'reply'+message.id">Reply</button>
+        <button v-on:click='openTextarea(message.id,"edit")' :id="'edit'+message.id" v-if="ownMessage">✎</button>
         <button :id="'del'+message.id" v-if="ownMessage || isInstructor">X</button>
       </li>
   </ul>
@@ -38,11 +38,6 @@ export default {
     return{messages, ownMessage, isInstructor};
   },
   methods:{
-    reply(id){
-
-
-    },
-
     isReply(replyId){
       let reply="REPLY ID NOT FOUND. 'TIS BAD.";
       let replyAuthor="AUTHOR NOT FOUND EITHER";
@@ -61,17 +56,31 @@ export default {
       return([reply,replyAuthor]);
     },
 
-    edit(id){
+    openTextarea(id,action){
       if(document.getElementById("newTextarea")){
         document.getElementById("newTextarea").remove();//remove other reply/edit boxes
       };
-      const edit=document.createElement("textarea");
+      if(document.getElementById("replyingTo")){
+        document.getElementById("replyingTo").remove();
+      };
+      const textbox=document.createElement("textarea");
+      textbox.id="newTextarea";
+      textbox.classList.add("bg-white");
       const message=document.getElementById("mes"+id);
-      const oldText=document.getElementById("text"+id);
-      edit.id="newTextarea";
-      edit.textContent=oldText.textContent;
-      edit.classList.add("bg-white");
-      message.appendChild(edit);
+      if(action=="edit"){
+        const oldText=document.getElementById("text"+id);
+        textbox.textContent=oldText.textContent;
+        //match textarea size to contents
+      }
+      else if(action=="reply"){
+        const replyingTo=document.createElement("p");
+        const author=document.getElementById("author"+id.toString());
+        replyingTo.id="replyingTo";
+        replyingTo.classList.add("bg-gray-500");
+        replyingTo.textContent="Replying to "+author.textContent;
+        message.appendChild(replyingTo);
+      }
+      message.appendChild(textbox);
     }
   }
 };
