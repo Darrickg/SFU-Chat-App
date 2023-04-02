@@ -5,9 +5,13 @@
     Profs/TAs can delete any messages
 -->
 <template>
-  <ul v-for="message in messages" :key="message.id" class="container flex flex-wrap bg-gray-100">
-      <li :id="'mes'+message.id" class="text-black p-2">
-        <p v-if="message.reply" v-text="isReply(message.reply)" class="bg-gray-400"></p>
+  <ul v-for="message in messages" :key="message.id" class="container flex flex-wrap bg-gray-100 text-left">
+      <li :id="'mes'+message.id" class="text-black p-3">
+        <div :id="'reply'+message.id" v-if="message.reply" class="bg-gray-400 text-white ml-2">
+          <p v-text="isReply(message.reply)[0]">
+          </p>
+          <p v-text="isReply(message.reply)[1]"></p>
+        </div>
         <p :id="'text'+message.id">{{message.text}}</p>
         <p>{{message.email}}</p>
         <button :id="'reply'+message.id">Reply</button>
@@ -25,8 +29,9 @@ export default {
     const messages=ref([//get messages from api
       {text:"Can I get an extension? Pls?", id:3, email:"aiya@sfu.ca"},
       {text:"How do you center a div?", id:4, email:"sarah@sfu.ca"},
-      {text:"Angular sucks.", id:5, email:"darrick@sfu.ca"},
-      {text:"Lol no.", id:6, reply:3, email:"bobby@sfu.ca"}
+      {text:"Aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", id:5, email:"darrick@sfu.ca"},
+      {text:"Lol no.", id:6, reply:3, email:"bobby@sfu.ca"},
+      {text:"Mood.", id:7, reply:5, email:"aiya@sfu.ca"}
     ]);
     let ownMessage=new Boolean(true);
     let isInstructor=new Boolean(true);
@@ -40,24 +45,20 @@ export default {
 
     isReply(replyId){
       let reply="REPLY ID NOT FOUND. 'TIS BAD.";
+      let replyAuthor="AUTHOR NOT FOUND EITHER";
       for(let i=0;i<this.messages.length;i++)
       {
         if(this.messages[i].id==replyId)
         {
           reply=this.messages[i].text;
-          console.log("fuck."+reply);
+          replyAuthor=this.messages[i].email;
         }
       }
-      console.log(this.messages[1].id);
-      //shorten to first 20 characters
-      console.log("thingy: "+"text"+replyId.toString());
-      if(reply!=null){
-        return(reply);
+      //shorten to first 30 characters
+      if(reply.length>30){
+        reply=reply.slice(0,30)+"...";
       }
-      else{
-        return("REPLY ID NOT FOUND. 'TIS BAD.");
-        //return(reply.textContent);
-      }
+      return([reply,replyAuthor]);
     },
 
     edit(id){
