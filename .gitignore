@@ -2,6 +2,7 @@
 node_modules
 /dist
 server.js
+models.js
 
 
 # local env files

@@ -1,17 +1,20 @@
 import express from 'express';
-import mongoose from 'mongoose';
+import mysql from 'mysql2'
 
 const PORT = process.env.PORT || 8080;
-const MONGODB_URI = process.env.MONGODB_URI || 'localhost:27017';
-const MONGODB_DATABASE = process.env.MONGODB_DATABASE || 'project';
+const MYSQL_URI = process.env.MYSQL_URI || 'localhost';
+const MYSQL_DATABASE = process.env.MYSQL_DATABASE || 'project';
+const MYSQL_PASSWORD = process.env.MYSQL_PASSWORD
 
 // Database setup
-mongoose.connect('mongodb://' + MONGODB_URI + '/' + MONGODB_DATABASE);
-const db = mongoose.connection;
-db.on('error', (error) => {
-    throw error;
+mysql.createConnection({
+    host: MYSQL_URI,
+    user: 'root',
+    database: MYSQL_DATABASE,
+    password: MYSQL_PASSWORD
 });
 
+// Express setup
 const app = express();
 
 app.use('/', express.static('./dist'))
