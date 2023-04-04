@@ -33,12 +33,14 @@ interface TA {
 }
 
 interface Message {
-    id: number;
+    // id?: number;
     email: string;
     sectionID: string;
+    courseID: string;
+    facultyName: string;
     time: Date;
     text: string;
-    edited: boolean;
+    edited?: boolean;
 }
 
 export {

@@ -2,11 +2,11 @@ DROP DATABASE IF EXISTS project;
 CREATE DATABASE project;
 USE project;
 CREATE TABLE faculties (
-    facultyName VARCHAR(256) NOT NULL,
+    facultyName VARCHAR(8) NOT NULL,
     PRIMARY KEY (facultyName)
 );
 CREATE TABLE courses (
-    facultyName VARCHAR(256) NOT NULL,
+    facultyName VARCHAR(8) NOT NULL,
     courseID VARCHAR(4) NOT NULL,
     courseName VARCHAR(256),
     FOREIGN KEY (facultyName) REFERENCES faculties(facultyName),
@@ -15,7 +15,7 @@ CREATE TABLE courses (
 CREATE TABLE sections (
     sectionID VARCHAR(4) NOT NULL,
     courseID VARCHAR(4) NOT NULL,
-    facultyName VARCHAR(256) NOT NULL,
+    facultyName VARCHAR(8) NOT NULL,
     FOREIGN KEY (facultyName, courseID) REFERENCES courses(facultyName, courseID),
     CONSTRAINT faculty_course_section PRIMARY KEY (facultyName, courseID, sectionID)
 );
@@ -24,6 +24,16 @@ CREATE TABLE users (
     firstName VARCHAR(256),
     lastName VARCHAR(256),
     PRIMARY KEY(email)
+);
+CREATE TABLE messages (
+    id INT NOT NULL AUTO_INCREMENT,
+    email VARCHAR(256) NOT NULL,
+    sectionID VARCHAR(4) NOT NULL,
+    courseID VARCHAR(4) NOT NULL,
+    facultyName VARCHAR(8) NOT NULL,
+    time DATETIME NOT NULL,
+    edited TINYINT NOT NULL DEFAULT 0,
+    PRIMARY KEY (id)
 );
 INSERT INTO faculties (facultyName)
 VALUES ('CMPT'),

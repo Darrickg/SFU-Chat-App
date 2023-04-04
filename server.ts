@@ -1,6 +1,6 @@
 import express from 'express';
 import mysql from 'mysql2';
-import { Course, Faculty, Section, User } from './models';
+import { Course, Faculty, Message, Section, User } from './models';
 
 const PORT: number = Number(process.env.PORT) || 8080;
 const MYSQL_URI: string = process.env.MYSQL_URI || 'localhost';
@@ -11,7 +11,8 @@ const ENDPOINT = {
     faculty: ':facultyName',
     course: ':courseID',
     section: ':sectionID',
-    user: ':user'
+    user: 'user/:user',
+    message: 'message/:message'
 };
 
 // Database setup
@@ -94,7 +95,7 @@ app.post(FACULTY_URL, (request, response) => {
     });
 });
 
-const COURSE_URL = [ENDPOINT.api, ENDPOINT.faculty, ENDPOINT.course].join('/');
+const COURSE_URL = [FACULTY_URL, ENDPOINT.course].join('/');
 app.get(COURSE_URL, (request, response) => {
     console.log(request.method, request.url);
     const course: Course = {
@@ -148,19 +149,19 @@ app.post(COURSE_URL, (request, response) => {
     });
 });
 
-const SECTION_URL = [ENDPOINT.api, ENDPOINT.faculty, ENDPOINT.course, ENDPOINT.section].join('/');
+const SECTION_URL = [COURSE_URL, ENDPOINT.section].join('/');
 app.get(SECTION_URL, (request, response) => {
     console.log(request.method, request.url);
     const section: Section = {
         sectionID: `'${request.params.sectionID}'`,
-        courseID: `'${request.params.sectionID}'`,
+        courseID: `'${request.params.courseID}'`,
         facultyName: `'${request.params.facultyName}'`
     };
 
     const sql = 'SELECT * FROM sections'
         + ` WHERE (facultyName = ${section.facultyName}`
         + ` AND courseID = ${section.courseID}`
-        + ` AND sectionID = ${section.sectionID}`;
+        + ` AND sectionID = ${section.sectionID})`;
     pool.query(sql, (error, rows) => {
         if (error) {
             console.log(error);
@@ -247,6 +248,58 @@ app.post(USER_URL, (request, response) => {
             } else {
                 response.sendStatus(500);
             }
+            return;
+        }
+
+        console.log(rows);
+        response.json(rows);
+    });
+});
+
+const MESSAGE_URL = [ENDPOINT.api, ENDPOINT.message].join('/');
+app.get(MESSAGE_URL, (request, response) => {
+    console.log(request.method, request.url);
+
+    const sql = 'SELECT * FROM messages'
+        + ` WHERE (facultyName = '${request.body.facultyName}'`
+        + ` AND courseID = '${request.body.courseID}'`
+        + ` AND sectionID = '${request.body.sectionID}')`
+        + ' ORDER BY time'
+        + ` LIMIT ${request.params.message}`;
+    pool.query(sql, (error, rows) => {
+        if (error) {
+            console.log(error);
+            if (error.code === 'ER_DUP_ENTRY') {
+                response.sendStatus(409);
+            } else {
+                response.sendStatus(500);
+            }
+            return;
+        }
+
+        console.log(rows);
+        response.json(rows);
+    });
+});
+
+app.post(MESSAGE_URL, (request, response) => {
+    console.log(request.method, request.url);
+    const message: Message = {
+        email: `'${request.body.email}'`,
+        sectionID: `'${request.body.sectionID}'`,
+        courseID: `'${request.body.courseID}'`,
+        facultyName: `'${request.body.facultyName}'`,
+        time: new Date,
+        text: `'${request.body.text}'`
+    };
+
+    const sql = 'INSERT INTO messages (email, sectionID, courseID, facultyName, time, text)'
+        + ` VALUES (${message.email}, ${message.sectionID}, ${message.courseID}, ${message.facultyName},`
+        + ` ${message.time} ${message.text})`;
+    pool.query(sql, (error, rows) => {
+        if (error) {
+            console.log(error);
+            response.sendStatus(500);
             return;
         }
 
