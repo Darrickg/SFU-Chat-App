@@ -10,7 +10,8 @@ const ENDPOINT = {
     api: '/api',
     faculty: ':facultyName',
     course: ':courseID',
-    section: ':sectionID'
+    section: ':sectionID',
+    user: ':user'
 };
 
 // Database setup
@@ -78,7 +79,11 @@ app.post(FACULTY_URL, (request, response) => {
     const sql = `INSERT INTO faculties (facultyName)`
         + ` VALUES (${faculty.facultyName})`;
     pool.query(sql, (error, rows) => {
-        if (error) {
+        if (error != null && error.code === 'ER_DUP_ENTRY') {
+            console.log(error);
+            response.sendStatus(409);
+            return;
+        } else if (error) {
             console.log(error);
             response.sendStatus(500);
             return;
@@ -128,9 +133,13 @@ app.post(COURSE_URL, (request, response) => {
     const sql = 'INSERT INTO courses (facultyName, courseID, courseName)'
         + `VALUES (${course.facultyName}, ${course.courseID}, ${course.courseName})`;
     pool.query(sql, (error, rows) => {
-        if (error) {
+        if (error != null && error.code === 'ER_DUP_ENTRY') {
             console.log(error);
-            response.send(500);
+            response.sendStatus(409);
+            return;
+        } else if (error) {
+            console.log(error);
+            response.sendStatus(500);
             return;
         }
 
@@ -146,10 +155,12 @@ app.get(SECTION_URL, (request, response) => {
         sectionID: `'${request.params.sectionID}'`,
         courseID: `'${request.params.sectionID}'`,
         facultyName: `'${request.params.facultyName}'`
-    }
+    };
 
     const sql = 'SELECT * FROM sections'
-        + ` WHERE sectionID = ${section.sectionID}`
+        + ` WHERE (facultyName = ${section.facultyName}`
+        + ` AND courseID = ${section.courseID}`
+        + ` AND sectionID = ${section.sectionID}`;
     pool.query(sql, (error, rows) => {
         if (error) {
             console.log(error);
@@ -162,8 +173,30 @@ app.get(SECTION_URL, (request, response) => {
     });
 });
 
-app.post(SECTION_URL, (_request, response) => {
-    response.sendStatus(200);
+app.post(SECTION_URL, (request, response) => {
+    console.log(request.method, request.url);
+    const section: Section = {
+        sectionID: `'${request.params.sectionID}'`,
+        courseID: `'${request.params.courseID}'`,
+        facultyName: `'${request.params.facultyName}'`
+    };
+
+    const sql = 'INSERT INTO sections (facultyName, courseID, sectionID)'
+        + ` VALUES (${section.facultyName}, ${section.courseID}, ${section.sectionID})`;
+    pool.query(sql, (error, rows) => {
+        if (error != null && error.code == 'ER_DUP_ENTRY') {
+            console.log(error);
+            response.sendStatus(409);
+            return;
+        } else if (error) {
+            console.log(error);
+            response.sendStatus(500);
+            return;
+        }
+
+        console.log(rows);
+        response.sendStatus(200);
+    });
 });
 
 app.listen(PORT, () => {
