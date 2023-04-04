@@ -1,6 +1,6 @@
 import express from 'express';
 import mysql from 'mysql2';
-import { Course, Faculty, Section } from './models';
+import { Course, Faculty, Section, User } from './models';
 
 const PORT: number = Number(process.env.PORT) || 8080;
 const MYSQL_URI: string = process.env.MYSQL_URI || 'localhost';
@@ -79,13 +79,13 @@ app.post(FACULTY_URL, (request, response) => {
     const sql = `INSERT INTO faculties (facultyName)`
         + ` VALUES (${faculty.facultyName})`;
     pool.query(sql, (error, rows) => {
-        if (error != null && error.code === 'ER_DUP_ENTRY') {
+        if (error) {
             console.log(error);
-            response.sendStatus(409);
-            return;
-        } else if (error) {
-            console.log(error);
-            response.sendStatus(500);
+            if (error.code === 'ER_DUP_ENTRY') {
+                response.sendStatus(409);
+            } else {
+                response.sendStatus(500);
+            }
             return;
         }
 
@@ -133,13 +133,13 @@ app.post(COURSE_URL, (request, response) => {
     const sql = 'INSERT INTO courses (facultyName, courseID, courseName)'
         + `VALUES (${course.facultyName}, ${course.courseID}, ${course.courseName})`;
     pool.query(sql, (error, rows) => {
-        if (error != null && error.code === 'ER_DUP_ENTRY') {
+        if (error) {
             console.log(error);
-            response.sendStatus(409);
-            return;
-        } else if (error) {
-            console.log(error);
-            response.sendStatus(500);
+            if (error.code === 'ER_DUP_ENTRY') {
+                response.sendStatus(409);
+            } else {
+                response.sendStatus(500);
+            }
             return;
         }
 
@@ -148,7 +148,7 @@ app.post(COURSE_URL, (request, response) => {
     });
 });
 
-const SECTION_URL = [ENDPOINT.api, ENDPOINT.faculty, ENDPOINT.course, ENDPOINT.section].join('/')
+const SECTION_URL = [ENDPOINT.api, ENDPOINT.faculty, ENDPOINT.course, ENDPOINT.section].join('/');
 app.get(SECTION_URL, (request, response) => {
     console.log(request.method, request.url);
     const section: Section = {
@@ -184,7 +184,7 @@ app.post(SECTION_URL, (request, response) => {
     const sql = 'INSERT INTO sections (facultyName, courseID, sectionID)'
         + ` VALUES (${section.facultyName}, ${section.courseID}, ${section.sectionID})`;
     pool.query(sql, (error, rows) => {
-        if (error != null && error.code == 'ER_DUP_ENTRY') {
+        if (error != null && error.code === 'ER_DUP_ENTRY') {
             console.log(error);
             response.sendStatus(409);
             return;
@@ -196,6 +196,62 @@ app.post(SECTION_URL, (request, response) => {
 
         console.log(rows);
         response.sendStatus(200);
+    });
+});
+
+const USER_URL = [ENDPOINT.api, ENDPOINT.user].join('/');
+app.get(USER_URL, (request, response) => {
+    console.log(request.method, request.url);
+    const user: User = {
+        email: `'${request.body.email}'`,
+        firstName: null,
+        lastName: null
+    };
+
+    const sql = 'SELECT * FROM users'
+        + ` WHERE email = ${user.email}`;
+    pool.query(sql, (error, rows) => {
+        if (error) {
+            console.log(error);
+            response.sendStatus(500);
+            return;
+        }
+
+        console.log(rows);
+        response.json(rows);
+    });
+});
+
+app.post(USER_URL, (request, response) => {
+    console.log(request.method, request.path);
+    const user: User = {
+        email: `'${request.body.email}'`,
+        firstName: null,
+        lastName: null
+    };
+
+    if (request.body.firstName) {
+        user.firstName = `'${request.body.firstName}'`;
+    }
+    if (request.body.lastName) {
+        user.lastName = `'${request.body.lastName}'`;
+    }
+
+    const sql = 'INSERT INTO users (email, firstName, lastName)'
+        + `VALUES (${user.email}, ${user.firstName}, ${user.lastName})`;
+    pool.query(sql, (error, rows) => {
+        if (error) {
+            console.log(error);
+            if (error.code === 'ER_DUP_ENTRY') {
+                response.sendStatus(409);
+            } else {
+                response.sendStatus(500);
+            }
+            return;
+        }
+
+        console.log(rows);
+        response.json(rows);
     });
 });
 

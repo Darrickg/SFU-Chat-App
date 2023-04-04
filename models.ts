@@ -16,8 +16,8 @@ interface Section {
 
 interface User {
     email: string;
-    firstName?: string;
-    lastName?: string;
+    firstName: string | null;
+    lastName: string | null;
 }
 
 interface Admin {
