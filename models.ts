@@ -11,6 +11,7 @@ interface Course {
 interface Section {
     sectionID: string;
     courseID: string;
+    facultyName: string;
 }
 
 interface User {
