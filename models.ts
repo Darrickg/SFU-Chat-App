@@ -5,7 +5,7 @@ interface Faculty {
 interface Course {
     courseID: string;
     facultyName: string;
-    courseName?: string;
+    courseName: string | null;
 }
 
 interface Section {
