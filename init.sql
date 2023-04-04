@@ -5,8 +5,7 @@ USE project;
 CREATE TABLE faculties (
     facultyName varchar(256) NOT NULL,
 
-    PRIMARY KEY (facultyName),
-    UNIQUE (facultyName)
+    PRIMARY KEY (facultyName)
 );
 
 CREATE TABLE courses (

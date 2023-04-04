@@ -4,8 +4,8 @@ interface Faculty {
 
 interface Course {
     courseID: string;
-    departmentName: string;
-    courseName: string;
+    facultyName: string;
+    courseName?: string;
 }
 
 interface Section {
