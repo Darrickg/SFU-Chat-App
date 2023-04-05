@@ -6,9 +6,11 @@
   - [Courses](#courses)
   - [Sections](#sections)
 - [Users](#users)
-- [Messages](#messages)
   - [GET](#get)
   - [POST](#post)
+- [Messages](#messages)
+  - [GET](#get-1)
+  - [POST](#post-1)
 
 # Classes
 
@@ -57,11 +59,7 @@
 /api/users/
 ```
 
-```bash
-curl -X GET <url>/api/users \
-    -H 'Content-Type: application/json' \
-    -d '{ "email": "bobbyc@sfu.ca", "professor": true }
-```
+## GET
 
 | Parameter             | Description               |
 | --------------------- | ------------------------- |
@@ -72,7 +70,26 @@ curl -X GET <url>/api/users \
 
 **NOTE:** Searches tables in order and returns first match. TA -> Professor -> Admin
 
-`GET` returns list of users  
+```bash
+curl -X GET <url>/api/users \
+    -H 'Content-Type: application/json' \
+    -d '{ "email": "bobbyc@sfu.ca", "professor": true }
+```
+
+## POST
+
+| Parameter             | Description               |
+| --------------------- | ------------------------- |
+| `email: required`     | Email of user to look for |
+| `firstName: optional` | User first name           |
+| `lastName: optional`  | User last name            |
+
+```bash
+curl -X GET <url>/api/users \
+    -H 'Content-Type: application/json' \
+    -d '{ "email": "bobbyc@sfu.ca", "firstName": "Bobby", "lastName": "Chan" }
+```
+
 `POST` returns
 
 - `200` success
