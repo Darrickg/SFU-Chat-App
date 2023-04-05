@@ -36,3 +36,4 @@ node_modules/**/.deps/
 node_modules/**/build/Makefile
 node_modules/**/**/build/Makefile
 /node_modules/
+node_modules
