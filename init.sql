@@ -25,6 +25,18 @@ CREATE TABLE users (
     lastName VARCHAR(256),
     PRIMARY KEY(email)
 );
+CREATE TABLE admins (
+    email VARCHAR(256) NOT NULL,
+    FOREIGN KEY (email) REFERENCES users(email)
+);
+CREATE TABLE professors (
+    email VARCHAR(256) NOT NULL,
+    FOREIGN KEY (email) REFERENCES users(email)
+);
+CREATE TABLE tas (
+    email VARCHAR(256) NOT NULL,
+    FOREIGN KEY (email) REFERENCES users(email)
+);
 CREATE TABLE messages (
     id INT NOT NULL AUTO_INCREMENT,
     email VARCHAR(256) NOT NULL,
@@ -47,4 +59,9 @@ VALUES ('CMPT', '372'),
 INSERT INTO sections (facultyName, courseID, sectionID)
 VALUES ('CMPT', '372', 'D100');
 INSERT INTO users (email, firstName, lastName)
-VALUES ('bobbyc@sfu.ca', 'Bobby', 'Chan');
+VALUES ('bobbyc@sfu.ca', 'Bobby', 'Chan'),
+    ('atyndall@sfu.ca', 'Aidan', 'Tyndall');
+INSERT INTO admins (email)
+VALUES ('atyndall@sfu.ca');
+INSERT INTO professors (email)
+VALUES ('bobbyc@sfu.ca');
