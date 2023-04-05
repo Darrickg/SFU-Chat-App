@@ -33,7 +33,7 @@ interface TA {
 }
 
 interface Message {
-    // id?: number;
+    id?: number;
     email: string;
     sectionID: string;
     courseID: string;

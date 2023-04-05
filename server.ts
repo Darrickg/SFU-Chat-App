@@ -33,10 +33,13 @@ const app = express();
 
 app.use(express.json());
 app.use('/', express.static('./dist'));
+app.use((request, response, next) => {
+    console.log(request.method, request.url);
+    next();
+});
 
 const API_URL = ENDPOINT.api;
 app.get(API_URL, (request, response) => {
-    console.log(request.method, request.url);
     const sql = 'SELECT * FROM faculties';
     pool.query(sql, (error, rows) => {
         if (error) {
@@ -52,7 +55,6 @@ app.get(API_URL, (request, response) => {
 
 const FACULTY_URL = [ENDPOINT.api, ENDPOINT.faculty].join('/');
 app.get(FACULTY_URL, (request, response) => {
-    console.log(request.method, request.url);
     const faculty: Faculty = {
         facultyName: `'${request.params.facultyName}'`
     };
@@ -72,7 +74,6 @@ app.get(FACULTY_URL, (request, response) => {
 });
 
 app.post(FACULTY_URL, (request, response) => {
-    console.log(request.method, request.url);
     const faculty: Faculty = {
         facultyName: `'${request.params.facultyName}'`
     };
@@ -97,7 +98,6 @@ app.post(FACULTY_URL, (request, response) => {
 
 const COURSE_URL = [FACULTY_URL, ENDPOINT.course].join('/');
 app.get(COURSE_URL, (request, response) => {
-    console.log(request.method, request.url);
     const course: Course = {
         courseID: `'${request.params.courseID}'`,
         facultyName: `'${request.params.facultyName}'`,
@@ -120,7 +120,6 @@ app.get(COURSE_URL, (request, response) => {
 });
 
 app.post(COURSE_URL, (request, response) => {
-    console.log(request.method, request.url);
     const course: Course = {
         courseID: `'${request.params.courseID}'`,
         facultyName: `'${request.params.facultyName}'`,
@@ -151,7 +150,6 @@ app.post(COURSE_URL, (request, response) => {
 
 const SECTION_URL = [COURSE_URL, ENDPOINT.section].join('/');
 app.get(SECTION_URL, (request, response) => {
-    console.log(request.method, request.url);
     const section: Section = {
         sectionID: `'${request.params.sectionID}'`,
         courseID: `'${request.params.courseID}'`,
@@ -175,7 +173,6 @@ app.get(SECTION_URL, (request, response) => {
 });
 
 app.post(SECTION_URL, (request, response) => {
-    console.log(request.method, request.url);
     const section: Section = {
         sectionID: `'${request.params.sectionID}'`,
         courseID: `'${request.params.courseID}'`,
@@ -202,7 +199,6 @@ app.post(SECTION_URL, (request, response) => {
 
 const USER_URL = [ENDPOINT.api, ENDPOINT.user].join('/');
 app.get(USER_URL, (request, response) => {
-    console.log(request.method, request.url);
     const user: User = {
         email: `'${request.body.email}'`,
         firstName: null,
@@ -224,7 +220,6 @@ app.get(USER_URL, (request, response) => {
 });
 
 app.post(USER_URL, (request, response) => {
-    console.log(request.method, request.path);
     const user: User = {
         email: `'${request.body.email}'`,
         firstName: null,
@@ -258,8 +253,6 @@ app.post(USER_URL, (request, response) => {
 
 const MESSAGE_URL = [ENDPOINT.api, ENDPOINT.message].join('/');
 app.get(MESSAGE_URL, (request, response) => {
-    console.log(request.method, request.url);
-
     const sql = 'SELECT * FROM messages'
         + ` WHERE (facultyName = '${request.body.facultyName}'`
         + ` AND courseID = '${request.body.courseID}'`
@@ -283,7 +276,6 @@ app.get(MESSAGE_URL, (request, response) => {
 });
 
 app.post(MESSAGE_URL, (request, response) => {
-    console.log(request.method, request.url);
     const message: Message = {
         email: `'${request.body.email}'`,
         sectionID: `'${request.body.sectionID}'`,
