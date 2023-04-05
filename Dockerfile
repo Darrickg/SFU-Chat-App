@@ -9,4 +9,4 @@ COPY . .
 RUN npm install
 RUN npx tsc
 
-CMD ["npm", "server.js"]
+CMD ["node", "server.js"]
