@@ -1,6 +1,6 @@
 import express from 'express';
 import mysql from 'mysql2';
-//import socket from 'socket.io';
+//import io from 'socket.io';
 import http from 'http';
 import { Course, Faculty, Message, Section, User } from './models';
 
@@ -334,14 +334,15 @@ app.post(SECTION_URL, (request, response) => {
 
 //websocket
 let server=http.createServer(app);
-const {Server}=require('socket.io');
-const io=new Server(server);
+//const {Server}=require('socket.io');
+const io=require('socket.io')('http');
 let onlineUsers=0;
 
 io.on('connection', function(socket:any){
     console.log("User connected");
     onlineUsers++;
-    socket.emit('message',"Now connected");
+    socket.emit('userChange',onlineUsers);
+    socket.broadcast.emit('userChange',onlineUsers);
 
     socket.on('disconnect', function(){
         console.log("User disconnected");
@@ -349,13 +350,24 @@ io.on('connection', function(socket:any){
         socket.broadcast.emit('userChange',onlineUsers);
     });
 
-    /*socket.on('message', (message:any)=>{//:Message ?
-        const msg=new Message(message)
-    })*/
+    socket.on('message', async(message:Message)=>{//:Message ?
+        const msg:Message=message;
+        //await pool.query(msg);
+        socket.broadcast.emit('message',message);
+    })
 });
 
-server.listen(3000,()=>{
-    console.log("Server listening on port 3000")
+/*const message: Message = {
+    email: request.body.email,
+    sectionID: request.body.sectionID,
+    courseID: request.body.courseID,
+    facultyName: request.body.facultyName,
+    time: new Date,
+    text: request.body.text
+};*/
+
+server.listen(8080,()=>{
+    console.log("Server listening on port 8080")
 });
 
 
