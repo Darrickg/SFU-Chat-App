@@ -7,5 +7,6 @@ WORKDIR /app
 COPY . .
 
 RUN npm install
+RUN npx tsc
 
-CMD ["npm", "run", "serve"]
+CMD ["npm", "server.js"]
