@@ -12,7 +12,7 @@ const ENDPOINT = {
     course: ':courseID',
     section: ':sectionID',
     user: 'user/:user',
-    message: 'message/:message'
+    message: 'message'
 };
 
 // Database setup
@@ -28,18 +28,30 @@ const pool = mysql.createPool({
     queueLimit: 0
 });
 
+// Helper functions
+function arrayHasUndefined(array: any[]): boolean {
+    array.forEach(element => {
+        if (element === undefined) {
+            return true;
+        }
+    });
+
+    return false;
+}
+
 // Express setup
 const app = express();
 
 app.use(express.json());
 app.use('/', express.static('./dist'));
-app.use((request, response, next) => {
+app.use((request, _response, next) => {
     console.log(request.method, request.url);
     next();
 });
 
+// Express endpoints
 const API_URL = ENDPOINT.api;
-app.get(API_URL, (request, response) => {
+app.get(API_URL, (_request, response) => {
     const sql = 'SELECT * FROM faculties';
     pool.query(sql, (error, rows) => {
         if (error) {
@@ -253,12 +265,24 @@ app.post(USER_URL, (request, response) => {
 
 const MESSAGE_URL = [ENDPOINT.api, ENDPOINT.message].join('/');
 app.get(MESSAGE_URL, (request, response) => {
+    const requiredParams = [
+        request.body,
+        request.body.facultyName,
+        request.body.courseID,
+        request.body.sectionID,
+        request.body.messageLimit
+    ];
+    if (arrayHasUndefined(requiredParams)) {
+        response.sendStatus(503);
+        return;
+    }
+
     const sql = 'SELECT * FROM messages'
         + ` WHERE (facultyName = '${request.body.facultyName}'`
         + ` AND courseID = '${request.body.courseID}'`
         + ` AND sectionID = '${request.body.sectionID}')`
         + ' ORDER BY time'
-        + ` LIMIT ${request.params.message}`;
+        + ` LIMIT ${request.body.messageLimit}`;
     pool.query(sql, (error, rows) => {
         if (error) {
             console.log(error);
@@ -276,6 +300,19 @@ app.get(MESSAGE_URL, (request, response) => {
 });
 
 app.post(MESSAGE_URL, (request, response) => {
+    const requiredParams = [
+        request.body,
+        request.body.email,
+        request.body.sectionID,
+        request.body.courseID,
+        request.body.facultyName,
+        request.body.text
+    ];
+    if (arrayHasUndefined(requiredParams)) {
+        response.sendStatus(503);
+        return;
+    }
+
     const message: Message = {
         email: `'${request.body.email}'`,
         sectionID: `'${request.body.sectionID}'`,
