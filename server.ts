@@ -1,5 +1,7 @@
 import express from 'express';
 import mysql from 'mysql2';
+//import socket from 'socket.io';
+import http from 'http';
 import { Course, Faculty, Message, Section, User } from './models';
 
 const PORT: number = Number(process.env.PORT) || 8080;
@@ -329,6 +331,33 @@ app.post(SECTION_URL, (request, response) => {
         response.sendStatus(200);
     });
 });
+
+//websocket
+let server=http.createServer(app);
+const {Server}=require('socket.io');
+const io=new Server(server);
+let onlineUsers=0;
+
+io.on('connection', function(socket:any){
+    console.log("User connected");
+    onlineUsers++;
+    socket.emit('message',"Now connected");
+
+    socket.on('disconnect', function(){
+        console.log("User disconnected");
+        onlineUsers--;
+        socket.broadcast.emit('userChange',onlineUsers);
+    });
+
+    /*socket.on('message', (message:any)=>{//:Message ?
+        const msg=new Message(message)
+    })*/
+});
+
+server.listen(3000,()=>{
+    console.log("Server listening on port 3000")
+});
+
 
 app.listen(PORT, () => {
     console.log(`App running on port ${PORT}`);
