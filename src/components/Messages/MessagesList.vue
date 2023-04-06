@@ -6,7 +6,7 @@
 -->
 <template>
   <div class="flex flex-col p-4 gap-4">
-  <template v-for="(msg,index) in messages">
+  <template v-for="(msg,index) in messages" :key="index">
     <Message v-bind="msg" :user-i-d="userID"/>
   </template>
   </div>
@@ -29,7 +29,11 @@ export default {
   },
   methods:{
   },
-
+  created() {
+    if (this.$cookies.isKey("username")) {
+      this.userID = this.$cookies.get("username")
+    }
+  }
 };
 </script>
 
