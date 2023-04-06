@@ -1,6 +1,5 @@
 <template>
   <CourseInfo/>
-  <DiscussionNav/>
   <MessagesList/>
   <MessageForm/>
 </template>
