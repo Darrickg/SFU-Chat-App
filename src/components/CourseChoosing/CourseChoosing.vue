@@ -95,6 +95,7 @@ export default {
   methods: {
     setName(name){
       this.$cookies.set("username", name);
+      location.reload();
     },
     goToCourses: function () {
       const apiUrl = `http://34.95.17.81/api/`;
