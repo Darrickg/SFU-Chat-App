@@ -3,16 +3,30 @@
 -->
 <template>
     <form method="post" class="flex flex-row justify-center p-4">
-      <textarea id="newMessage" class="w-1/2 border-solid border-2 border-gray-300 resize-none p-1"></textarea>
-      <input type="submit" id="submitMessage" class="bg-sfu-dark-red text-white rounded-md p-1 hover:bg-gray-500" value="send">
+      <v-text-field class="w-1/2 border-solid border-2 border-gray-300 resize-none p-1"></v-text-field>
+      <button @click="MessageRestController.postMessage(facultyName,courseID,username,message)" class="bg-sfu-dark-red text-white rounded-md p-1 hover:bg-gray-500"></button>
     </form>
 </template>
 
 <script>
+import {MessageRestController} from "@/components/Messages/MessageHandling.ts";
 export default {
   name: 'MessageForm',
+  computed: {
+    MessageRestController() {
+      return MessageRestController
+    }
+  },
   props: {
+    facultyName:'',
+    courseID:'',
+    username:'',
 
+  },
+  data(){
+    return{
+      message:""
+    }
   }
 }
 </script>

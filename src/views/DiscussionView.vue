@@ -2,8 +2,8 @@
   <h3 class="text-3xl font-bold sticky top-0 z-50 bg-gray-200 w-full">
     {{facultyName.toUpperCase() + courseID.toUpperCase()}}
   </h3>
-  <MessagesList/>
-  <MessageForm/>
+  <MessagesList :user-i-d="userName" :messages="messages"/>
+  <MessageForm :faculty-name="facultyName" :course-i-d="courseID" :username="userName" />
 </template>
 
 <script>
@@ -22,13 +22,16 @@ export default {
     MessagesList,
   },
   beforeCreate() {
-    this.messages = Promise.resolve(MessageRestController.getMessage(this.facultyName, this.courseID));
+    (MessageRestController.getMessage(this.facultyName, this.courseID)).then((data)=>{
+      this.messages = data;
+    })
   },
   data() {
     return {
       facultyName: 'CMPT',
       courseID: '372',
       messages:[],
+      userName:''
       }
     }
 

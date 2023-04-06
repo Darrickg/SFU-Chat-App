@@ -1,6 +1,6 @@
 import axios from "axios";
 
-class MessageRestController {
+export class MessageRestController {
     static async getMessage(facultyName: string, courseID: string) {
         await axios.get(process.env.DATABASE_URL + '/api/messages', {
             params: {

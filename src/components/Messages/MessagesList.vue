@@ -25,7 +25,7 @@ export default {
   },
   props:{
     userID: '',
-    messages:
+    messages:[],
   },
   methods:{
   },
