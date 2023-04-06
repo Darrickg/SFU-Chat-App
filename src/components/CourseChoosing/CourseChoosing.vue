@@ -34,6 +34,12 @@
     ></v-autocomplete>
   </div>
 </div>
+
+<div v-if="hasItems">
+  <button class="self-end bg-gray-100 p-2 px-4 rounded" @click="goToCourses()">
+    Go to chatrooms
+  </button>
+</div>
 </template>
 
 <script>
@@ -60,12 +66,18 @@ export default {
     }
   },
   computed: {
-
+    hasItems() {
+      return this.chosenCourses.length > 0;
+    }
   },
   beforeMount() {
     this.getAvailableDepartment();
   },
   methods: {
+
+    goToCourses: function () {
+      this.$router.push({ name: 'home' })
+    },
 
     getChosenCourse: function (department) {
       return this.getListCourse(department);
