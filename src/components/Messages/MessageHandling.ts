@@ -24,6 +24,12 @@ class MessageRestController {
                 email: email,
                 text: text
             }
+        }).catch((err) => {
+            if (err.response.status === 500) {
+                this.handleFacultyNotExist(facultyName);
+                this.handleCourseNotExist(facultyName, courseID);
+                // resend message?
+            }
         });
     }
 
@@ -40,7 +46,6 @@ class MessageRestController {
 
 
     static async handleCourseNotExist(facultyName: string, courseID: string) {
-        await this.handleFacultyNotExist(facultyName);
         await axios.post(process.env.DATABASE_URL + `/api/${facultyName.toUpperCase()}/${courseID.toUpperCase()}`).then(
             (response) => {
                 if (response.status === 500) {
