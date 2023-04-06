@@ -11,7 +11,7 @@ import DiscussionNav from '@/components/Discussion/DiscussionNav.vue'
 import MessageForm from '@/components/Messages/MessageForm'
 import MessagesList from '@/components/Messages/MessagesList'
 import CourseInfo from '@/components/CourseInfo.vue'
-import MessageRestController from '@/components/Messages/MessageHandling'
+import {MessageRestController} from '@/components/Messages/MessageHandling'
 import axios from "axios";
 
 export default {
@@ -20,15 +20,19 @@ export default {
     MessageForm,
     MessagesList,
   },
-  beforeCreate() {
+  mounted() {
+    const courseJSON = this.$cookies.get("course");
+     this.courseDeserialized = JSON.parse(courseJSON);
+    console.log(this.courseDeserialized);
     (MessageRestController.getMessage(this.facultyName, this.courseID)).then((data)=>{
       this.messages = data;
     })
   },
   data() {
     return {
-      facultyName: 'CMPT',
-      courseID: '372',
+      courseDesiralized: {},
+      facultyName: '',
+      courseID: '',
       messages:[],
       userName:''
       }

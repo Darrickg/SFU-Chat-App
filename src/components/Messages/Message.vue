@@ -7,12 +7,9 @@
 </template>
 
 <script >
-import { register, VueAdvancedChat } from 'vue-advanced-chat'
-register();
 export default {
   name: "Message",
   components:{
-    VueAdvancedChat
   },
   props:{
     userID:'',

@@ -1,7 +1,7 @@
 import axios from "axios";
 
 export class MessageRestController {
-    static async getMessage(facultyName: string, courseID: string) {
+    static async getMessage(facultyName, courseID) {
         await axios.get(process.env.DATABASE_URL + '/api/messages', {
             params: {
                 courseID: courseID,
@@ -16,7 +16,7 @@ export class MessageRestController {
         });
     }
 
-    static async postMessage(facultyName: string, courseID: string, email: string, text: string) {
+    static async postMessage(facultyName, courseID, email, text) {
         await axios.post(process.env.DATABASE_URL + '/api/messages', {
             params: {
                 courseID: courseID,
@@ -34,7 +34,7 @@ export class MessageRestController {
     }
 
 
-    static async handleFacultyNotExist(facultyName: string) {
+    static async handleFacultyNotExist(facultyName) {
         await axios.post(process.env.DATABASE_URL + `/api/${facultyName.toUpperCase()}`).then(
             (response) => {
                 if (response.status === 500) {
@@ -45,7 +45,7 @@ export class MessageRestController {
     }
 
 
-    static async handleCourseNotExist(facultyName: string, courseID: string) {
+    static async handleCourseNotExist(facultyName, courseID) {
         await axios.post(process.env.DATABASE_URL + `/api/${facultyName.toUpperCase()}/${courseID.toUpperCase()}`).then(
             (response) => {
                 if (response.status === 500) {

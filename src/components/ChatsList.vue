@@ -8,7 +8,7 @@
 -->
 <template>
     <div v-for="(course, index) in chosenCourses" :key="index">
-      <div class="course" @click="goToCourse()">
+      <div class="course" @click="goToCourse(course)">
         <h3> {{ course.courseDept }} {{ course.courseNumber }} {{ course.courseSection }}</h3>
         <h4>{{  course.courseName }}</h4>
         <p>Instructor: {{  course.courseDept }}</p>
@@ -20,35 +20,14 @@
 import {ref} from "vue";
 export default {
   name: 'ChatsList',
-  // setup(){
-  //   const courses=ref([ // THIS IS TEMPORARY, WE SHOULD GET A LIST OF COURSES FROM THE FILTERS
-  //     {
-  //       name:"CMPT 372",
-  //       professor:"Bobby Chan",
-  //     },
-  //     {
-  //       name:"CMPT 376",
-  //       professor:"Bobby Chan",
-  //     },
-  //     {
-  //       name:"CMPT 295",
-  //       professor:"Bobby Chan",
-  //     },
-  //     {
-  //       name:"MATH 152",
-  //       professor:"Bobby Chan",
-  //     },
-  //   ]);
-
-  //   return{courses};
-  // },
   props: {
     chosenCourses: {
       type: Array
     }
   },
   methods: {
-        goToCourse() {
+        goToCourse(course) {
+            this.$cookies.set("course", JSON.stringify(course));
             this.$router.push({ name: 'discussion' })
         },
     }
