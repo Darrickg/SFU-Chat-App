@@ -368,9 +368,8 @@ io.on('connection', function(socket:any){
     time: new Date,
     text: request.body.text
 };*/
-console.log("hate everything.");
-server.listen(8080,()=>{
-    console.log("Server listening on port 8080")
+server.listen(3000,()=>{
+    console.log("Server listening on port 3000")
 });
 
 
