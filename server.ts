@@ -1,5 +1,7 @@
 import express from 'express';
 import mysql from 'mysql2';
+//import io from 'socket.io';
+import http from 'http';
 import { Course, Faculty, Message, Section, User } from './models';
 
 const PORT: number = Number(process.env.PORT) || 8080;
@@ -69,6 +71,7 @@ app.get(USER_URL, (request, response) => {
 
     pool.query(sql, request.body.email, (error, rows) => {
         if (error) {
+            console.log("Scunthorpe.");
             console.log(error);
             response.sendStatus(500);
             return;
@@ -329,6 +332,41 @@ app.post(SECTION_URL, (request, response) => {
         response.sendStatus(200);
     });
 });
+
+/*
+//websocket
+let server=http.createServer(app);
+//const {Server}=require('socket.io');
+const io=require('socket.io')(server);
+let onlineUsers=0;
+
+io.on('connection', function(socket:any){
+    console.log("User connected");
+    onlineUsers++;
+    console.log("Users:"+onlineUsers);
+    //socket.emit('userChange',onlineUsers);
+    //socket.broadcast.emit('userChange',onlineUsers);
+
+    socket.on('disconnect', function(){
+        console.log("User disconnected");
+        onlineUsers--;
+        console.log("Users:"+onlineUsers);
+        //socket.broadcast.emit('userChange',onlineUsers);
+    });
+
+    socket.on('newMessage', async(message:Message)=>{//:Message ?
+        const msg:Message=message;
+        console.log(msg);
+        //await pool.query(msg);
+        //socket.broadcast.emit('message',message);
+    })
+});
+
+
+server.listen(3000,()=>{
+    console.log("Server listening on port 3000")
+});
+*/
 
 app.listen(PORT, () => {
     console.log(`App running on port ${PORT}`);
