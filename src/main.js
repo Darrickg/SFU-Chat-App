@@ -10,6 +10,7 @@ import { createVuetify } from 'vuetify'
 import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'
 import {aliases, mdi} from "vuetify/iconsets/mdi";
+import VueCookies from 'vue-cookies'
 
 const vuetify = createVuetify({
     components,
@@ -30,4 +31,5 @@ app.use(vue3GoogleLogin,{
     clientId:googleClientID
 })
 app.use(vuetify)
+app.use(VueCookies);
 app.use(router).mount('#app')

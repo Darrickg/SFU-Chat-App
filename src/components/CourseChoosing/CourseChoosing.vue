@@ -3,6 +3,14 @@
     class="flex flex-col align-center gap-4"
     v-if="!courseLoading">
   <h3 class="text-md-h4">Choose your department and courses</h3>
+  <div class="flex flex-col gap-2 w-1/2">
+    <v-text-field
+        class="w-full"
+        label="Username"
+        v-model="username"
+    ></v-text-field>
+    <button class="self-end bg-blue-100 p-2 rounded" @click="setName(username)">Set name</button>
+  </div>
   <div class="w-1/2 flex flex-col items-center">
     <v-autocomplete
         multiple
@@ -18,7 +26,7 @@
     ></v-autocomplete>
     <button @click="chooseCourseStep = true; getAvailableCourses()" class="self-end bg-gray-100 p-2 px-4 rounded">Next</button>
   </div>
-  <div v-if="chooseCourseStep">
+  <div v-if="chooseCourseStep" class="w-1/2">
     <v-autocomplete
         multiple
         clearable
@@ -62,7 +70,8 @@ export default {
       loading: false,
       courseLoading: false,
       autocompleteCount: 0,
-      chooseCourseStep: false
+      chooseCourseStep: false,
+      username:""
     }
   },
   computed: {
@@ -74,7 +83,9 @@ export default {
     this.getAvailableDepartment();
   },
   methods: {
-
+    setName(name){
+      this.$cookies.set("username", name);
+    },
     goToCourses: function () {
       this.$router.push({ 
         name: 'home',

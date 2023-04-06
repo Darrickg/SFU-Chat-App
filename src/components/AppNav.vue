@@ -1,9 +1,9 @@
 <template>
-  <section class="flex flex-wrap bg-sfu-dark-red w-full">
+  <section class="flex flex-wrap items-center bg-sfu-dark-red w-full">
     <img alt="SFU logo" src="@/assets/SFU_block.png" class="h-14 w-auto">
-    <button @click="isHidden=!isHidden" class="absolute right-2 text-white hover:bg-white">
+    <button @click="isHidden=!isHidden" class=" text-center absolute right-2 text-white hover:bg-white">
       <span class="hover:text-sfu-dark-red">
-        Account
+        {{ existCookie ? `Welcome, ${userName}` : `Account`}}
       </span>
     </button>
 
@@ -37,6 +37,14 @@ export default {
   data(){
     let isHidden=new Boolean(true);
     return{isHidden};
+  },
+  computed:{
+    userName(){
+      return this.$cookies.get("username");
+    },
+    existCookie(){
+      return this.$cookies.isKey("username");
+    }
   },
   props: {
 
