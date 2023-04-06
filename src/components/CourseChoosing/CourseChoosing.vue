@@ -24,7 +24,7 @@
         clearable
         chips
         :loading="loading"
-        :item-title="(item)=>`${item.courseDept} ${item.courseNumber}`"
+        :item-title="(item)=>`${item.courseDept} ${item.courseNumber} ${item.courseSection}`"
         :return-object="true"
         label="Select courses:"
         v-model="chosenCourses"
@@ -76,7 +76,14 @@ export default {
   methods: {
 
     goToCourses: function () {
-      this.$router.push({ name: 'home' })
+      this.$router.push({ 
+        name: 'home',
+        query: { chosenCourses: JSON.stringify(this.chosenCourses) }
+      })
+    },
+
+    printList: function () {
+      console.log(this.chosenCourses[0].courseDept)
     },
 
     getChosenCourse: function (department) {
