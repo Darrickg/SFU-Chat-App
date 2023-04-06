@@ -150,6 +150,11 @@ export class Department{
     }
 }
 
+/**
+ *
+ * @param termString
+ * @returns {Promise<Department[]>}
+ */
 const getDepartmentName = (termString)=>{
     let [term,year] = parseInput(termString)
     let url = `${BASE_URL}${year}/${term}`;
@@ -167,7 +172,7 @@ const getDepartmentName = (termString)=>{
  * IMPORTANT NOTE: This function cascades errors, please do error handling when calling this function with a .catch block
  * @param {string} termString - string of term + year (eg: "Spring 2023", "2022 Fall")
  * @param {string[]} deptList - list of departments to search (eg: "IAT", "cmpt")
- * @returns {Promise<TermInfo>} A promise of lists containing information for term cards in the term page 
+ * @returns {Promise<TermInfo[]>} A promise of lists containing information for term cards in the term page
  */ 
 const getTermInfo = async (termString, deptList) => {
   let [term, year] = parseInput(termString);
