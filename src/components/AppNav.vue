@@ -9,7 +9,7 @@
 
     <nav id="accountNav" v-if="!isHidden" class="container flex flex-wrap bg-sfu-dark-red">
 
-      <router-link to="/home" class="text-white hover:bg-white p-1">
+      <router-link to="/choose" class="text-white hover:bg-white p-1">
         <span class="hover:text-sfu-dark-red">
           Home
         </span>
