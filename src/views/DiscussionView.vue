@@ -20,17 +20,19 @@ export default {
     MessageForm,
     MessagesList,
   },
-  mounted() {
+  beforeMount() {
     const courseJSON = this.$cookies.get("course");
-     this.courseDeserialized = JSON.parse(courseJSON);
-    console.log(this.courseDeserialized);
+    this.facultyName = courseJSON["courseDept"];
+    this.courseID = courseJSON["courseNumber"];
+  },
+  mounted() {
     (MessageRestController.getMessage(this.facultyName, this.courseID)).then((data)=>{
+      console.log(data);
       this.messages = data;
     })
   },
   data() {
     return {
-      courseDesiralized: {},
       facultyName: '',
       courseID: '',
       messages:[],

@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import {ref} from "vue";
+import {ref, toRaw} from "vue";
 export default {
   name: 'ChatsList',
   props: {
@@ -27,7 +27,8 @@ export default {
   },
   methods: {
         goToCourse(course) {
-            this.$cookies.set("course", JSON.stringify(course));
+          console.log(toRaw(course));
+            this.$cookies.set("course", (course));
             this.$router.push({ name: 'discussion' })
         },
     }
