@@ -29,11 +29,7 @@ export default {
   },
   methods:{
   },
-  created() {
-    if (this.$cookies.isKey("username")) {
-      this.userID = this.$cookies.get("username")
-    }
-  }
+
 };
 </script>
 
