@@ -4,13 +4,15 @@
 - [Classes](#classes)
   - [Faculty](#faculty)
   - [Courses](#courses)
-  - [Sections](#sections)
 - [Users](#users)
   - [GET](#get)
   - [POST](#post)
-- [Messages](#messages)
+- [Enrollment](#enrollment)
   - [GET](#get-1)
   - [POST](#post-1)
+- [Messages](#messages)
+  - [GET](#get-2)
+  - [POST](#post-2)
 
 # Classes
 
@@ -20,7 +22,7 @@
 /api/<facultyName>
 ```
 
-`GET` returns list of faculties  
+`GET` returns list of courses  
 `POST` returns
 
 - `200` success
@@ -33,20 +35,7 @@
 /api/<facultyName>/<courseID>
 ```
 
-`GET` returns list of courses  
-`POST` returns
-
-- `200` success
-- `409` duplicate entry
-- `500` server error
-
-## Sections
-
-```
-/api/<facultyName>/<courseID>/<sectionID>
-```
-
-`GET` returns list of sections  
+`GET` returns course info  
 `POST` returns
 
 - `200` success
@@ -96,6 +85,34 @@ curl -X GET <url>/api/users \
 - `409` duplicate entry
 - `500` server error
 
+# Enrollment
+
+```
+/api/enrollment
+```
+
+## GET
+
+| Parameter         | Description               |
+| ----------------- | ------------------------- |
+| `email: required` | Email of user to look for |
+
+```bash
+curl -X GET localhost:8080/api/users -H 'Content-Type: application/json' -d '{ "email": "seank@sfu.ca" }'
+```
+
+```bash
+[{"facultyName":"CMPT","courseID":"372"}]
+```
+
+## POST
+
+| Parameter               | Description               |
+| ----------------------- | ------------------------- |
+| `email: required`       | Email of user to look for |
+| `courseID: required`    | Course to enroll in       |
+| `facultyName: required` | Faculty to enroll in      |
+
 # Messages
 
 ```
@@ -104,17 +121,16 @@ curl -X GET <url>/api/users \
 
 ## GET
 
-| Parameter               | Description                      |
-| ----------------------- | -------------------------------- |
-| `sectionID: required`   | Section message was sent to      |
-| `courseID: required`    | Course message was sent to       |
-| `facultyName: required` | Faculty message was sent to      |
-| `limit: required`       | Set number of messages to return |
+| Parameter               | Description                            |
+| ----------------------- | -------------------------------------- |
+| `courseID: required`    | Course message was sent to             |
+| `facultyName: required` | Faculty message was sent to            |
+| `limit: optional`       | Set number of messages to return or 50 |
 
 ```bash
 curl -X GET <url>/api/messages \
     -H 'Content-Type: application/json' \
-    -d '{ "sectionID": "D100", "courseID": "372", "facultyName": "CMPT", "limit": 50 }
+    -d '{ "courseID": "372", "facultyName": "CMPT", "limit": 50 }
 ```
 
 ## POST
@@ -122,7 +138,6 @@ curl -X GET <url>/api/messages \
 | Parameter               | Description                    |
 | ----------------------- | ------------------------------ |
 | `email: required`       | Email of user who sent message |
-| `sectionID: required`   | Section message was sent to    |
 | `courseID: required`    | Course message was sent to     |
 | `facultyName: required` | Faculty message was sent to    |
 | `text: required`        | Time message was sent/updated  |
@@ -131,5 +146,5 @@ curl -X GET <url>/api/messages \
 ```bash
 curl -X POST <url>/api/messages \
     -H 'Content-Type: application/json' \
-    -d '{ "email": "bobbyc@sfu.ca "sectionID": "D100", "courseID": "372", "facultyName": "CMPT", "text": "Hello world!" }
+    -d '{ "email": "bobbyc@sfu.ca, "courseID": "372", "facultyName": "CMPT", "text": "Hello world!" }
 ```
