@@ -5,6 +5,12 @@ export default {
     name: "LoginView",
     components: {
         LoginBox,
+    },
+
+    methods: {
+        goToHome() {
+            this.$router.push({ name: 'home' })
+        }
     }
 }
 </script>
@@ -22,13 +28,17 @@ const googleCallback=(response)=>{
     <div class="flex-container">
         <div class="login">
             <LoginBox />
+            <br>
+            <button @click="goToHome()">Sign in as guest</button>
         </div>
         <br />
         <br />
-        <button>Sign in as guest</button>
-        <a href="https://cas.sfu.ca/cas/login?service=http%3A%2F%2F34.130.237.234%2F"><button>SFU Login<br>(We still need permission)</button></a>
-        <a href="https://cas.sfu.ca/cas/logout?service=http%3A%2F%2F34.130.237.234%2F"><button>SFU Logout</button></a>
-        <GoogleLogin :callback="googleCallback"/>
+
+        <div>
+            <a href="https://cas.sfu.ca/cas/login?service=http%3A%2F%2F34.130.237.234%2F"><button>SFU Login</button></a>
+            <!-- <a href="https://cas.sfu.ca/cas/logout?service=http%3A%2F%2F34.130.237.234%2F"><button>SFU Logout</button></a> -->
+            <GoogleLogin :callback="googleCallback"/>
+        </div>
     </div>
 </template>
 
