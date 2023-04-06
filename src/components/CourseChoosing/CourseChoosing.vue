@@ -91,6 +91,9 @@ export default {
   },
   beforeMount() {
     this.getAvailableDepartment();
+    if(this.$cookies.isKey("username")){
+      this.username = this.$cookies.get("username");
+    }
   },
   methods: {
     setName(name){

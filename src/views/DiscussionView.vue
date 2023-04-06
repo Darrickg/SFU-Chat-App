@@ -1,4 +1,4 @@
-<template class="flex flex-col gap-4 ">
+<template class="flex flex-col gap-4 " id="discussion">
   <h3 class="text-3xl font-bold sticky top-0 z-50 bg-gray-200 w-full">
     {{facultyName.toUpperCase() + courseID.toUpperCase()}}
   </h3>
@@ -46,8 +46,10 @@ export default {
     (MessageRestController.getMessage(this.facultyName, this.courseID)).then((data)=>{
       console.log(data);
       this.messages = data;
-    })
-  },
+    }).then(()=>{
+      window.scrollTo(0, document.body.scrollHeight || document.documentElement.scrollHeight);
+    });
+    },
   data() {
     return {
       facultyName: '',
