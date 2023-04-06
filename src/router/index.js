@@ -13,11 +13,6 @@ const routes = [
   },
   {
     path: '/cmpt372',
-    name: 'course',
-    component: CourseView
-  },
-  {
-    path: '/cmpt372/assignment-1',
     name: 'discussion',
     component: DiscussionView
   },
