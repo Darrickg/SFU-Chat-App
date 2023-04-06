@@ -44,8 +44,9 @@ const app = express();
 
 app.use(express.json());
 app.use('/', express.static('./dist'));
-app.use((request, _response, next) => {
+app.use((request, response, next) => {
     console.log(request.method, request.url);
+    response.setHeader('Access-Control-Allow-Origin', '*');
     next();
 });
 
@@ -166,10 +167,10 @@ app.post(ENROLLMENT_URL, (request, response) => {
 
 const MESSAGE_URL = [ENDPOINT.api, ENDPOINT.message].join('/');
 app.get(MESSAGE_URL, (request, response) => {
-    const messageLimit = request.body.limit || 50;
+    const messageLimit = request.query.limit || 50;
     const requiredParams = [
-        request.body.facultyName,
-        request.body.courseID,
+        request.query.facultyName,
+        request.query.courseID,
         messageLimit
     ];
     if (arrayHasUndefined(requiredParams)) {
@@ -197,10 +198,10 @@ app.get(MESSAGE_URL, (request, response) => {
 
 app.post(MESSAGE_URL, (request, response) => {
     const requiredParams = [
-        request.body.email,
-        request.body.courseID,
-        request.body.facultyName,
-        request.body.text
+        request.query.email,
+        request.query.courseID,
+        request.query.facultyName,
+        request.query.text
     ];
     if (arrayHasUndefined(requiredParams)) {
         response.sendStatus(503);
@@ -208,11 +209,11 @@ app.post(MESSAGE_URL, (request, response) => {
     }
 
     const message: Message = {
-        email: request.body.email,
-        courseID: request.body.courseID,
-        facultyName: request.body.facultyName,
+        email: request.query.email,
+        courseID: request.query.courseID,
+        facultyName: request.query.facultyName,
         time: new Date,
-        text: request.body.text
+        text: request.query.text
     };
 
     const sql = 'INSERT INTO messages SET ?';
