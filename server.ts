@@ -198,10 +198,10 @@ app.get(MESSAGE_URL, (request, response) => {
 
 app.post(MESSAGE_URL, (request, response) => {
     const requiredParams = [
-        request.body.email,
-        request.body.courseID,
-        request.body.facultyName,
-        request.body.text
+        request.query.email,
+        request.query.courseID,
+        request.query.facultyName,
+        request.query.text
     ];
     if (arrayHasUndefined(requiredParams)) {
         response.sendStatus(503);
@@ -209,11 +209,11 @@ app.post(MESSAGE_URL, (request, response) => {
     }
 
     const message: Message = {
-        email: request.body.email,
-        courseID: request.body.courseID,
-        facultyName: request.body.facultyName,
+        email: request.query.email as string,
+        courseID: request.query.courseID as string,
+        facultyName: request.query.facultyName as string,
         time: new Date,
-        text: request.body.text
+        text: request.query.text as string
     };
 
     const sql = 'INSERT INTO messages SET ?';
