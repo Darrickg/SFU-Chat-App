@@ -36,6 +36,7 @@ CREATE TABLE messages (
     courseID VARCHAR(4) NOT NULL,
     facultyName VARCHAR(8) NOT NULL,
     time DATETIME NOT NULL,
+    text VARCHAR(4096),
     edited TINYINT NOT NULL DEFAULT 0,
     PRIMARY KEY (id)
 );
