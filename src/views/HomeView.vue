@@ -2,11 +2,6 @@
   <div class="courses">
     <ChatsList :chosenCourses="chosenCourses"/>
   </div>
-
-  <h3 v-if="chosenCourses && chosenCourses.length > 0">{{ this.chosenCourses[0].courseDept }}</h3>
-  <button @click="printCourses()">
-    test
-  </button>
 </template>
 
 <script>
@@ -29,11 +24,11 @@ export default {
       this.chosenCourses = JSON.parse(chosenCourses);
     }
   },
-  methods: {
-    printCourses() {
-          console.log(this.chosenCourses[0])
-        }
-  }
+  // methods: {
+  //   printCourses() {
+  //         console.log(this.chosenCourses[0])
+  //       }
+  // }
 }
 </script>
 

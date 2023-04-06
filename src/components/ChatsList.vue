@@ -20,28 +20,28 @@
 import {ref} from "vue";
 export default {
   name: 'ChatsList',
-  setup(){
-    const courses=ref([ // THIS IS TEMPORARY, WE SHOULD GET A LIST OF COURSES FROM THE FILTERS
-      {
-        name:"CMPT 372",
-        professor:"Bobby Chan",
-      },
-      {
-        name:"CMPT 376",
-        professor:"Bobby Chan",
-      },
-      {
-        name:"CMPT 295",
-        professor:"Bobby Chan",
-      },
-      {
-        name:"MATH 152",
-        professor:"Bobby Chan",
-      },
-    ]);
+  // setup(){
+  //   const courses=ref([ // THIS IS TEMPORARY, WE SHOULD GET A LIST OF COURSES FROM THE FILTERS
+  //     {
+  //       name:"CMPT 372",
+  //       professor:"Bobby Chan",
+  //     },
+  //     {
+  //       name:"CMPT 376",
+  //       professor:"Bobby Chan",
+  //     },
+  //     {
+  //       name:"CMPT 295",
+  //       professor:"Bobby Chan",
+  //     },
+  //     {
+  //       name:"MATH 152",
+  //       professor:"Bobby Chan",
+  //     },
+  //   ]);
 
-    return{courses};
-  },
+  //   return{courses};
+  // },
   props: {
     chosenCourses: {
       type: Array
