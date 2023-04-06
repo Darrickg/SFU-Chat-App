@@ -12,13 +12,6 @@ CREATE TABLE courses (
     FOREIGN KEY (facultyName) REFERENCES faculties(facultyName),
     CONSTRAINT faculty_course PRIMARY KEY (facultyName, courseID)
 );
-CREATE TABLE sections (
-    sectionID VARCHAR(4) NOT NULL,
-    courseID VARCHAR(4) NOT NULL,
-    facultyName VARCHAR(8) NOT NULL,
-    FOREIGN KEY (facultyName, courseID) REFERENCES courses(facultyName, courseID),
-    CONSTRAINT faculty_course_section PRIMARY KEY (facultyName, courseID, sectionID)
-);
 CREATE TABLE users (
     email VARCHAR(256) NOT NULL,
     firstName VARCHAR(256),
@@ -40,12 +33,18 @@ CREATE TABLE tas (
 CREATE TABLE messages (
     id INT NOT NULL AUTO_INCREMENT,
     email VARCHAR(256) NOT NULL,
-    sectionID VARCHAR(4) NOT NULL,
     courseID VARCHAR(4) NOT NULL,
     facultyName VARCHAR(8) NOT NULL,
     time DATETIME NOT NULL,
     edited TINYINT NOT NULL DEFAULT 0,
     PRIMARY KEY (id)
+);
+CREATE TABLE enrollment (
+    email VARCHAR(265) NOT NULL,
+    courseID VARCHAR(4) NOT NULL,
+    facultyName VARCHAR(8) NOT NULL,
+    FOREIGN KEY (email) REFERENCES users(email),
+    FOREIGN KEY (facultyName, courseID) REFERENCES courses(facultyName, courseID)
 );
 INSERT INTO faculties (facultyName)
 VALUES ('CMPT'),
@@ -56,8 +55,6 @@ VALUES ('CMPT', '372'),
     ('CMPT', '376W'),
     ('MACM', '101'),
     ('MATH', '232');
-INSERT INTO sections (facultyName, courseID, sectionID)
-VALUES ('CMPT', '372', 'D100');
 INSERT INTO users (email, firstName, lastName)
 VALUES ('bobbyc@sfu.ca', 'Bobby', 'Chan'),
     ('atyndall@sfu.ca', 'Aidan', 'Tyndall');
@@ -65,3 +62,5 @@ INSERT INTO admins (email)
 VALUES ('atyndall@sfu.ca');
 INSERT INTO professors (email)
 VALUES ('bobbyc@sfu.ca');
+INSERT INTO enrollment (email, courseID, facultyName)
+VALUES ('atyndall@sfu.ca', '372', 'CMPT');

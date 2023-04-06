@@ -1,17 +1,17 @@
 import express from 'express';
 import mysql from 'mysql2';
-import { Course, Faculty, Message, Section, User } from './models';
+import { Course, Faculty, Message, User, Enrollment } from './models';
 
 const PORT: number = Number(process.env.PORT) || 8080;
 const MYSQL_URI: string = process.env.MYSQL_URI || 'localhost';
 const MYSQL_DATABASE: string = process.env.MYSQL_DATABASE || 'project';
-const MYSQL_PASSWORD: string | undefined = process.env.MYSQL_PASSWORD
+const MYSQL_PASSWORD: string | undefined = process.env.MYSQL_PASSWORD;
 const ENDPOINT = {
     api: '/api',
     faculty: ':facultyName',
     course: ':courseID',
-    section: ':sectionID',
     user: 'users',
+    enrollment: 'enrollment',
     message: 'messages'
 };
 
@@ -110,24 +110,41 @@ app.post(USER_URL, (request, response) => {
     });
 });
 
-const MESSAGE_URL = [ENDPOINT.api, ENDPOINT.message].join('/');
-app.get(MESSAGE_URL, (request, response) => {
+const ENROLLMENT_URL = [ENDPOINT.api, ENDPOINT.enrollment].join('/');
+app.get(ENROLLMENT_URL, (request, response) => {
+    const sql = 'SELECT * FROM enrollment'
+        + ' WHERE email = ?';
+    pool.query(sql, request.params.email, (error, rows) => {
+       if (error) {
+        console.log(error);
+        response.sendStatus(500);
+        return;
+       } 
+
+       console.log(rows);
+       response.json(rows);
+    });
+});
+
+app.post(ENROLLMENT_URL, (request, response) => {
     const requiredParams = [
+        request.body.email,
         request.body.facultyName,
         request.body.courseID,
-        request.body.sectionID,
-        request.body.messageLimit
     ];
     if (arrayHasUndefined(requiredParams)) {
         response.sendStatus(400);
         return;
     }
 
-    const sql = 'SELECT * FROM messages'
-        + ' WHERE (facultyName = ? AND courseID = ? AND sectionID = ?)'
-        + ' ORDER BY time'
-        + ' LIMIT ?';
-    pool.query(sql, requiredParams, (error, rows) => {
+    const enrollment: Enrollment = {
+        email: request.body.email,
+        facultyName: request.body.facultyName,
+        courseID: request.body.courseID
+    };
+
+    const sql = 'INSERT INTO enrollment SET ?';
+    pool.query(sql, enrollment, (error, rows) => {
         if (error) {
             console.log(error);
             if (error.code === 'ER_DUP_ENTRY') {
@@ -139,6 +156,34 @@ app.get(MESSAGE_URL, (request, response) => {
         }
 
         console.log(rows);
+        response.sendStatus(200);
+    });
+})
+
+
+const MESSAGE_URL = [ENDPOINT.api, ENDPOINT.message].join('/');
+app.get(MESSAGE_URL, (request, response) => {
+    const requiredParams = [
+        request.body.facultyName,
+        request.body.courseID,
+        request.body.messageLimit
+    ];
+    if (arrayHasUndefined(requiredParams)) {
+        response.sendStatus(400);
+        return;
+    }
+
+    const sql = 'SELECT * FROM messages'
+        + ' WHERE (facultyName = ? AND courseID = ?)'
+        + ' ORDER BY time'
+        + ' LIMIT ?';
+    pool.query(sql, requiredParams, (error, rows) => {
+        if (error) {
+            response.sendStatus(500);
+            return;
+        }
+
+        console.log(rows);
         response.json(rows);
     });
 });
@@ -146,7 +191,6 @@ app.get(MESSAGE_URL, (request, response) => {
 app.post(MESSAGE_URL, (request, response) => {
     const requiredParams = [
         request.body.email,
-        request.body.sectionID,
         request.body.courseID,
         request.body.facultyName,
         request.body.text
@@ -158,7 +202,6 @@ app.post(MESSAGE_URL, (request, response) => {
 
     const message: Message = {
         email: request.body.email,
-        sectionID: request.body.sectionID,
         courseID: request.body.courseID,
         facultyName: request.body.facultyName,
         time: new Date,
@@ -169,14 +212,19 @@ app.post(MESSAGE_URL, (request, response) => {
     pool.query(sql, message, (error, rows) => {
         if (error) {
             console.log(error);
-            response.sendStatus(500);
+            if (error.code === 'ER_DUP_ENTRY') {
+                response.sendStatus(409);
+            } else {
+                response.sendStatus(500);
+            }
             return;
         }
 
         console.log(rows);
-        response.json(rows);
+        response.sendStatus(200);
     });
 });
+
 const API_URL = ENDPOINT.api;
 app.get(API_URL, (_request, response) => {
     const sql = 'SELECT * FROM faculties';
@@ -242,7 +290,7 @@ app.get(COURSE_URL, (request, response) => {
         courseName: null
     }
 
-    const sql = 'SELECT * FROM sections'
+    const sql = 'SELECT * FROM courseID'
         + ' WHERE (facultyName = ? AND courseID = ?)';
     pool.query(sql, [course.facultyName, course.courseID], (error, rows) => {
         if (error) {
@@ -276,52 +324,6 @@ app.post(COURSE_URL, (request, response) => {
             } else {
                 response.sendStatus(500);
             }
-            return;
-        }
-
-        console.log(rows);
-        response.sendStatus(200);
-    });
-});
-
-const SECTION_URL = [COURSE_URL, ENDPOINT.section].join('/');
-app.get(SECTION_URL, (request, response) => {
-    const section: Section = {
-        sectionID: request.params.sectionID,
-        courseID: request.params.courseID,
-        facultyName: request.params.facultyName
-    };
-
-    const sql = 'SELECT * FROM sections'
-        + ' WHERE (facultyName = ? AND courseID = ? AND sectionID = ?)';
-    pool.query(sql, [section.facultyName, section.courseID, section.sectionID], (error, rows) => {
-        if (error) {
-            console.log(error);
-            response.send(500);
-            return;
-        }
-
-        console.log(rows);
-        response.json(rows);
-    });
-});
-
-app.post(SECTION_URL, (request, response) => {
-    const section: Section = {
-        sectionID: request.params.sectionID,
-        courseID: request.params.courseID,
-        facultyName: request.params.facultyName
-    };
-
-    const sql = 'INSERT INTO sections SET ?';
-    pool.query(sql, section, (error, rows) => {
-        if (error != null && error.code === 'ER_DUP_ENTRY') {
-            console.log(error);
-            response.sendStatus(409);
-            return;
-        } else if (error) {
-            console.log(error);
-            response.sendStatus(500);
             return;
         }
 

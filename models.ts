@@ -8,12 +8,6 @@ interface Course {
     courseName: string | null;
 }
 
-interface Section {
-    sectionID: string;
-    courseID: string;
-    facultyName: string;
-}
-
 interface User {
     email: string;
     firstName: string | null;
@@ -35,7 +29,6 @@ interface TA {
 interface Message {
     id?: number;
     email: string;
-    sectionID: string;
     courseID: string;
     facultyName: string;
     time: Date;
@@ -43,13 +36,19 @@ interface Message {
     edited?: boolean;
 }
 
+interface Enrollment {
+    email: string;
+    courseID: string;
+    facultyName: string;
+}
+
 export {
     Faculty,
     Course,
-    Section,
     User,
     Admin,
     Professor,
     TA,
-    Message
+    Message,
+    Enrollment
 };
