@@ -1,5 +1,13 @@
 ---
 services:
+  app:
+    build:
+      context: .
+      dockerfile: app.Dockerfile
+    ports:
+      - 8080:8080
+    restart: unless-stopped
+
   api:
     build:
       context: .
@@ -7,6 +15,7 @@ services:
       - 80:8080
     environment:
       MYSQL_PASSWORD: password
+      MYSQL_URL: db
     restart: unless-stopped
 
   db:
@@ -14,6 +23,7 @@ services:
     restart: unless-stopped
     volumes:
       - ${HOME}/db:/var/lib/mysql
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
     environment:
       MYSQL_ROOT_PASSWORD: password
       MYSQL_DATABASE: project
