@@ -1,11 +1,3 @@
-<!--
-    On all pages (at the top?)
-    List all page sections:
-        Home
-        Settings
-        Log Out
-        ...whatever else we come up with
--->
 <template>
   <section class="flex flex-wrap bg-sfu-dark-red w-full">
     <img alt="SFU logo" src="@/assets/SFU_block.png" class="h-14 w-auto">
