@@ -57,10 +57,12 @@ VALUES ('CMPT', '372'),
     ('MATH', '232');
 INSERT INTO users (email, firstName, lastName)
 VALUES ('bobbyc@sfu.ca', 'Bobby', 'Chan'),
-    ('atyndall@sfu.ca', 'Aidan', 'Tyndall');
+    ('atyndall@sfu.ca', 'Aidan', 'Tyndall'),
+    ('seank@sfu.ca', 'Sean', 'K');
 INSERT INTO admins (email)
 VALUES ('atyndall@sfu.ca');
 INSERT INTO professors (email)
 VALUES ('bobbyc@sfu.ca');
 INSERT INTO enrollment (email, courseID, facultyName)
-VALUES ('atyndall@sfu.ca', '372', 'CMPT');
+VALUES ('atyndall@sfu.ca', '372', 'CMPT'),
+    ('seank@sfu.ca', '372', 'CMPT');

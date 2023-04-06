@@ -112,9 +112,12 @@ app.post(USER_URL, (request, response) => {
 
 const ENROLLMENT_URL = [ENDPOINT.api, ENDPOINT.enrollment].join('/');
 app.get(ENROLLMENT_URL, (request, response) => {
-    const sql = 'SELECT * FROM enrollment'
+    if (request.body.email === undefined) {
+        response.sendStatus(400);
+    }
+    const sql = 'SELECT facultyName, courseID FROM enrollment'
         + ' WHERE email = ?';
-    pool.query(sql, request.params.email, (error, rows) => {
+    pool.query(sql, request.body.email, (error, rows) => {
        if (error) {
         console.log(error);
         response.sendStatus(500);
@@ -163,15 +166,17 @@ app.post(ENROLLMENT_URL, (request, response) => {
 
 const MESSAGE_URL = [ENDPOINT.api, ENDPOINT.message].join('/');
 app.get(MESSAGE_URL, (request, response) => {
+    const messageLimit = request.body.limit || 50;
     const requiredParams = [
         request.body.facultyName,
         request.body.courseID,
-        request.body.messageLimit
+        messageLimit
     ];
     if (arrayHasUndefined(requiredParams)) {
         response.sendStatus(400);
         return;
     }
+
 
     const sql = 'SELECT * FROM messages'
         + ' WHERE (facultyName = ? AND courseID = ?)'
