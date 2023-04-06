@@ -35,9 +35,9 @@ const googleCallback=(response)=>{
         <br />
 
         <div>
-            <a href="https://cas.sfu.ca/cas/login?service=http%3A%2F%2F34.130.237.234%2F"><button>SFU Login</button></a>
+            <!--a href="https://cas.sfu.ca/cas/login?service=http%3A%2F%2F34.130.237.234%2F"><button>SFU Login</button></a>-->
             <!-- <a href="https://cas.sfu.ca/cas/logout?service=http%3A%2F%2F34.130.237.234%2F"><button>SFU Logout</button></a> -->
-            <GoogleLogin :callback="googleCallback"/>
+            <!--GoogleLogin :callback="googleCallback"/-->
         </div>
     </div>
 </template>
