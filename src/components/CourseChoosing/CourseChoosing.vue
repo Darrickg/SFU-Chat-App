@@ -96,6 +96,30 @@ export default {
       this.$cookies.set("username", name);
     },
     goToCourses: function () {
+      const apiUrl = 'http://34.28.45.243/api/';
+
+      this.chosenCourses.forEach(course => {
+        const courseDept = course.courseDept
+        const courseNumber = course.courseNumber
+        const courseUrl = apiUrl + courseDept
+
+        axios.post(apiUrl, courseDept)
+        .then(response => {
+          console.log("succesfully post")
+        })
+        .catch(error => {
+          console.error("didnt succesfully post")
+        })
+
+        axios.post(courseUrl, courseNumber)
+        .then(response => {
+          console.log("succesfully post")
+        })
+        .catch(error => {
+          console.error("didnt succesfully post")
+        })
+      })
+
       this.$router.push({ 
         name: 'home',
         query: { chosenCourses: JSON.stringify(this.chosenCourses) }
