@@ -99,26 +99,23 @@ export default {
       const apiUrl = 'http://34.28.45.243/api/';
 
       this.chosenCourses.forEach(course => {
-        const courseDept = course.courseDept
-        const courseNumber = course.courseNumber
-        const courseUrl = apiUrl + courseDept
+        const courseDept = course.courseDept;
+        const courseNumber = course.courseNumber;
+        const deptUrl = `${apiUrl}${courseDept}`;
+        const courseUrl = `${deptUrl}/${courseNumber}`;
 
-        axios.post(apiUrl, courseDept)
-        .then(response => {
-          console.log("succesfully post")
-        })
-        .catch(error => {
-          console.error("didnt succesfully post")
-        })
-
-        axios.post(courseUrl, courseNumber)
-        .then(response => {
-          console.log("succesfully post")
-        })
-        .catch(error => {
-          console.error("didnt succesfully post")
-        })
-      })
+        axios.post(deptUrl)
+          .then(response => {
+            console.log(`Successfully created endpoint for courseDept ${courseDept}`);
+            return axios.post(courseUrl);
+          })
+          .then(response => {
+            console.log(`Successfully posted courseNumber ${courseNumber} to ${deptUrl}`);
+          })
+          .catch(error => {
+            console.error(`Failed to post course ${courseDept} ${courseNumber} to API: ${error}`);
+          });
+      });
 
       this.$router.push({ 
         name: 'home',
