@@ -49,7 +49,7 @@ export default {
   },
   methods: {
         goToCourse() {
-            this.$router.push({ name: 'course' })
+            this.$router.push({ name: 'discussion' })
         },
     }
 }
