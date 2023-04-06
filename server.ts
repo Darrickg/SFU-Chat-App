@@ -3,7 +3,7 @@ import mysql from 'mysql2';
 import { Course, Faculty, Message, User, Enrollment } from './models';
 
 const PORT: number = Number(process.env.PORT) || 8080;
-const MYSQL_URI: string = process.env.MYSQL_URI || 'localhost';
+const MYSQL_URL: string = process.env.MYSQL_URL || 'localhost';
 const MYSQL_DATABASE: string = process.env.MYSQL_DATABASE || 'project';
 const MYSQL_PASSWORD: string | undefined = process.env.MYSQL_PASSWORD;
 const ENDPOINT = {
@@ -17,7 +17,7 @@ const ENDPOINT = {
 
 // Database setup
 const pool = mysql.createPool({
-    host: MYSQL_URI,
+    host: MYSQL_URL,
     user: 'root',
     database: MYSQL_DATABASE,
     password: MYSQL_PASSWORD,

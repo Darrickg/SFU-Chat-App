@@ -97,7 +97,7 @@ export default {
       this.$cookies.set("username", name);
     },
     goToCourses: function () {
-      const apiUrl = 'http://34.28.45.243/api/';
+      const apiUrl = `http://34.95.17.81/api/`;
 
       this.chosenCourses.forEach(course => {
         const courseDept = course.courseDept;
@@ -108,13 +108,13 @@ export default {
         axios.post(deptUrl)
           .then(response => {
             console.log(`Successfully created endpoint for courseDept ${courseDept}`);
-            return axios.post(courseUrl);
-          })
-          .then(response => {
-            console.log(`Successfully posted courseNumber ${courseNumber} to ${deptUrl}`);
           })
           .catch(error => {
             console.error(`Failed to post course ${courseDept} ${courseNumber} to API: ${error}`);
+          });
+        axios.post(courseUrl)
+          .then(response => {
+            console.log(`Successfully posted courseNumber ${courseNumber} to ${deptUrl}`);
           });
       });
 
