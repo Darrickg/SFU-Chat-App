@@ -295,7 +295,7 @@ app.get(COURSE_URL, (request, response) => {
         courseName: null
     }
 
-    const sql = 'SELECT * FROM courseID'
+    const sql = 'SELECT * FROM courses'
         + ' WHERE (facultyName = ? AND courseID = ?)';
     pool.query(sql, [course.facultyName, course.courseID], (error, rows) => {
         if (error) {
