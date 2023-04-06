@@ -13,6 +13,7 @@ import MessagesList from '@/components/Messages/MessagesList'
 import CourseInfo from '@/components/CourseInfo.vue'
 import {MessageRestController} from '@/components/Messages/MessageHandling'
 import axios from "axios";
+import VueCookies from 'vue-cookies';
 
 export default {
   name: 'DiscussionView',
@@ -20,17 +21,21 @@ export default {
     MessageForm,
     MessagesList,
   },
-  mounted() {
+  beforeMount() {
     const courseJSON = this.$cookies.get("course");
-     this.courseDeserialized = JSON.parse(courseJSON);
-    console.log(this.courseDeserialized);
+    console.log(courseJSON);
+
+    this.userName = this.$cookies.get('username');
+    console.log(this.userName);
+  },
+  mounted(){
     (MessageRestController.getMessage(this.facultyName, this.courseID)).then((data)=>{
+      console.log(data);
       this.messages = data;
     })
   },
   data() {
     return {
-      courseDesiralized: {},
       facultyName: '',
       courseID: '',
       messages:[],

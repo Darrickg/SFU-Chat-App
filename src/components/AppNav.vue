@@ -44,12 +44,12 @@ export default {
     },
     existCookie(){
       return this.$cookies.isKey("username");
-    }
+    },
   },
   props: {
 
   },
-}
+};
 </script>
 
 <style scoped>
