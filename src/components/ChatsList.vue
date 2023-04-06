@@ -7,10 +7,11 @@
     Next to each course is direct link to the 3 most recent discussions? Would be convenient
 -->
 <template>
-    <div v-for="course in courses" :key="course.id">
+    <div v-for="(course, index) in chosenCourses" :key="index">
       <div class="course" @click="goToCourse()">
-        <h3> {{ course.name }} </h3>
-        <p>professor: {{  course.professor }}</p>
+        <h3> {{ course.courseDept }} {{ course.courseNumber }} {{ course.courseSection }}</h3>
+        <h4>{{  course.courseName }}</h4>
+        <p>Instructor: {{  course.courseDept }}</p>
       </div>
     </div>
 </template>
@@ -42,12 +43,14 @@ export default {
     return{courses};
   },
   props: {
-
+    chosenCourses: {
+      type: Array
+    }
   },
   methods: {
         goToCourse() {
             this.$router.push({ name: 'course' })
-        }
+        },
     }
 }
 </script>

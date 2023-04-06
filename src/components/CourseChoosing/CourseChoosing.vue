@@ -39,6 +39,8 @@
   <button class="self-end bg-gray-100 p-2 px-4 rounded" @click="goToCourses()">
     Go to chatrooms
   </button>
+
+  <h3>{{ this.chosenCourses[0].courseDept }}</h3>
 </div>
 </template>
 
@@ -76,7 +78,10 @@ export default {
   methods: {
 
     goToCourses: function () {
-      this.$router.push({ name: 'home' })
+      this.$router.push({ 
+        name: 'home',
+        query: { chosenCourses: JSON.stringify(this.chosenCourses) }
+      })
     },
 
     printList: function () {
