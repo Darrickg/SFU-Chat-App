@@ -1,33 +1,37 @@
 <template>
-<div class="flex flex-col align-center gap-4">
+<div
+    class="flex flex-col align-center gap-4"
+    v-if="!courseLoading">
   <h3 class="text-md-h4">Choose your department and courses</h3>
-  <v-autocomplete
-      multiple
-      clearable
-      chips
-      :loading="loading"
-      label="Select department:"
-      v-model="departments"
-      :items="availableDepartment"
-      class="w-1/2"
-      @blur="getAvailableCourses"
-  ></v-autocomplete>
-  <div v-for="dept in departments" >
-    <v-autocomplete v-if="this.getChosenCourse(dept)"
+  <div class="w-1/2 flex flex-col items-center">
+    <v-autocomplete
         multiple
         clearable
         chips
         :loading="loading"
+        :item-title="`abbr`"
+        label="Select department:"
+        v-model="departments"
+        :items="availableDepartment"
+        class="w-full"
+        @blur="getAvailableCourses()"
+    ></v-autocomplete>
+    <button @click="chooseCourseStep = true; getAvailableCourses()" class="self-end bg-gray-100 p-2 px-4 rounded">Next</button>
+  </div>
+  <div v-if="chooseCourseStep">
+    <v-autocomplete
+        multiple
+        clearable
+        chips
+        :loading="loading"
+        :item-title="(item)=>`${item.courseDept} ${item.courseNumber}`"
+        :return-object="true"
         label="Select courses:"
-        :value="this.getChosenCourse(dept).getCourses()"
-        @change="addCourse($event.target.value)"
-        :items="getChosenCourse(dept).getCourses()"
-        class="w-1/2"
-    >
-      <template v-slot:item="{ item }">
-        <span>{{ item.courseDept + " " + item.courseNumber }}</span>
-      </template>
-    </v-autocomplete>
+        v-model="chosenCourses"
+        :items="availableCourses"
+        class="w-full"
+        @click.once="getAvailableCourses"
+    ></v-autocomplete>
   </div>
 </div>
 </template>
@@ -45,22 +49,24 @@ export default {
   },
   data: function () {
     return {
-      chosenCourses: [Courses],
-      availableCourses: [Courses],
+      chosenCourses: [],
+      availableCourses:[],
       departments:[],
       availableDepartment:[],
-      loading: true,
-      courseLoading: true
+      loading: false,
+      courseLoading: false,
+      autocompleteCount: 0,
+      chooseCourseStep: false
     }
   },
   computed: {
-
 
   },
   beforeMount() {
     this.getAvailableDepartment();
   },
   methods: {
+
     getChosenCourse: function (department) {
       return this.getListCourse(department);
     },
@@ -68,10 +74,10 @@ export default {
      * Queries the SFU API for the departments available in the given term
      * @return {string[]}
      */
-    getAvailableDepartment: function () {
+    getAvailableDepartment: async function () {
       this.loading = true;
       let departments = [String];
-      getDepartmentName("Spring 2023").then((data) => {
+       getDepartmentName("Spring 2023").then((data) => {
         return data.map((department) => {
           return department.abbr;
         });
@@ -92,23 +98,17 @@ export default {
      * Queries the SFU API for the courses available in the given term, based on the chosen departments
      * @return {Courses[]}
      */
-    getAvailableCourses: async function () {
-      this.courseLoading = true;
+    getAvailableCourses:  function () {
+      this.loading = true;
+      this.availableCourses = [];
       for(let department of this.departments){
-        console.log(department);
-        if(this.availableCourses.map(course=>course.prototype.getDepartment()).includes(department)){
-          continue;
-        }
-        let courses = new Courses(department);
         getTermInfo("Spring 2023", [department]).then(
             (data) => {
-              console.log(data);
-              courses.addCourses(data)
+              this.availableCourses = [...this.availableCourses, ...data];
             }
         );
-        this.availableCourses.push(courses);
       }
-      this.courseLoading = false;
+      this.loading = false;
     },
 
     getCourses: function(){

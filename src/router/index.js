@@ -3,6 +3,7 @@ import HomeView from '../views/HomeView.vue'
 import CourseView from '../views/CourseView.vue'
 import LoginView from '../views/LoginView.vue'
 import DiscussionView from '../views/DiscussionView.vue'
+import CourseChoosing from "@/components/CourseChoosing/CourseChoosing.vue";
 
 const routes = [
   {
@@ -24,6 +25,11 @@ const routes = [
     path: '/login',
     name: 'login',
     component: LoginView
+  },
+  {
+    path: '/choose',
+    name: 'chooseCourse',
+    component: CourseChoosing
   }
 ]
 
