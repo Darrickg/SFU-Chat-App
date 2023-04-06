@@ -34,6 +34,12 @@
     ></v-autocomplete>
   </div>
 </div>
+
+<div v-if="hasItems">
+  <button class="self-end bg-gray-100 p-2 px-4 rounded" @click="goToCourses()">
+    Go to chatrooms
+  </button>
+</div>
 </template>
 
 <script>
