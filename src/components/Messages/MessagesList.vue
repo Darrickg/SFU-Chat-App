@@ -6,7 +6,7 @@
 -->
 <template>
   <div class="flex flex-col p-4 gap-4">
-  <template v-for="(msg,index) in messages">
+  <template v-for="(msg,index) in messages" :key="index">
     <Message v-bind="msg" :user-email="userID"/>
   </template>
   </div>
