@@ -54,7 +54,7 @@ export default {
 
 <style scoped>
 .course {
-  background: #f4f4f4;
+  background: lightgray;
   margin: 5px;
   padding: 10px 20px;
   cursor: pointer;
