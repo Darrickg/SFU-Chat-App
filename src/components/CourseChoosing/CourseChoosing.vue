@@ -24,30 +24,39 @@
         class="w-full"
         @blur="getAvailableCourses()"
     ></v-autocomplete>
-    <button @click="chooseCourseStep = true; getAvailableCourses()" class="self-end bg-gray-100 p-2 px-4 rounded">Next</button>
+
+    <div class="flex flex-row gap-4">
+      <button @click="chooseCourseStep = true; getAvailableCourses()" class="self-end bg-gray-100 p-2 px-4 rounded">Next</button>
+      <div v-if="hasItems">
+        <button class="self-end bg-gray-100 p-2 px-4 rounded" @click="goToCourses()">
+          Go to chatrooms
+        </button>
+      </div>
+    </div>
+
   </div>
-  <div v-if="chooseCourseStep" class="w-1/2">
-    <v-autocomplete
-        multiple
-        clearable
-        chips
-        :loading="loading"
-        :item-title="(item)=>`${item.courseDept} ${item.courseNumber} ${item.courseSection}`"
-        :return-object="true"
-        label="Select courses:"
-        v-model="chosenCourses"
-        :items="availableCourses"
-        class="w-full"
-        @click.once="getAvailableCourses"
-    ></v-autocomplete>
+    <div v-if="chooseCourseStep" class="w-1/2">
+      <v-autocomplete
+          multiple
+          clearable
+          chips
+          :loading="loading"
+          :item-title="(item)=>`${item.courseDept} ${item.courseNumber} ${item.courseSection}`"
+          :return-object="true"
+          label="Select courses:"
+          v-model="chosenCourses"
+          :items="availableCourses"
+          class="w-full"
+          @click.once="getAvailableCourses"
+      ></v-autocomplete>
   </div>
 </div>
 
-<div v-if="hasItems">
+<!-- <div v-if="hasItems">
   <button class="self-end bg-gray-100 p-2 px-4 rounded" @click="goToCourses()">
     Go to chatrooms
   </button>
-</div>
+</div> -->
 </template>
 
 <script>
