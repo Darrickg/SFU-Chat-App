@@ -3,8 +3,8 @@
 -->
 <template>
     <div class="flex flex-row justify-center p-4">
-      <v-text-field class="w-1/2 border-solid border-2 border-gray-300 resize-none p-1"></v-text-field>
-      <button @click="MessageRestController.postMessage(facultyName,courseID,username,message)" class="bg-sfu-dark-red text-white rounded-md p-1 hover:bg-gray-500"></button>
+      <v-text-field v-model="message" class="w-1/2 border-solid border-2 border-gray-300 resize-none p-1"></v-text-field>
+      <button @click="post()" class="bg-sfu-dark-red text-white rounded-md p-1 hover:bg-gray-500"></button>
     </div>
 </template>
 
@@ -13,15 +13,26 @@ import {MessageRestController} from "@/components/Messages/MessageHandling.js";
 export default {
   name: 'MessageForm',
   computed: {
-    MessageRestController() {
-      return MessageRestController
-    }
+
   },
   props: {
     facultyName:'',
     courseID:'',
-    username:'',
-
+    email:'',
+  },
+  emits:['addText'],
+  methods:{
+    post(){
+      console.log({
+        facultyName: this.facultyName,
+        courseID: this.courseID,
+        email: this.email,
+        text: this.message
+      })
+      MessageRestController.postMessage(this.facultyName,this.courseID,this.email,this.message);
+      this.$emit('addText',this.message);
+      this.message = "";
+    }
   },
   data(){
     return{

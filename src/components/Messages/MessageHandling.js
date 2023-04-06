@@ -28,20 +28,44 @@ export class MessageRestController {
     }
 
     static async postMessage(facultyName, courseID, email, text) {
-        await axios.post(this.DATABASE_URL + '/api/messages', {
-            params: {
-                courseID: courseID,
-                facultyName: facultyName,
-                email: email,
-                text: text
-            }
-        }).catch((err) => {
-            if (err.response.status === 500) {
-                this.handleFacultyNotExist(facultyName);
-                this.handleCourseNotExist(facultyName, courseID);
-                // resend message?
-            }
+        console.log({
+            facultyName: facultyName,
+            courseID: courseID,
+            email: email,
+            text: text
         });
+        try {
+            const response = await axios.post(this.DATABASE_URL +"/api/messages/",null,
+                {
+                    params:{
+                        courseID: courseID,
+                        facultyName: facultyName,
+                        email: email,
+                        text: text
+                    }
+                },
+            );
+            console.log(response);
+            return response.data;
+        } catch (error) {
+            if (error.response) {
+                const status = error.response.status;
+                switch (status) {
+                    case 500:
+                        await this.handleFacultyNotExist(facultyName);
+                        await this.handleCourseNotExist(facultyName, courseID);
+                        // resend message?
+                        break;
+                    // handle other status codes if needed
+                    default:
+                        throw new Error(`Unexpected error: ${error.message}`);
+                }
+            } else if (error.request) {
+                throw new Error(`No response received: ${error.message}`);
+            } else {
+                throw new Error(`Request failed: ${error.message}`);
+            }
+        }
     }
 
 

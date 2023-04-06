@@ -3,7 +3,11 @@
     {{facultyName.toUpperCase() + courseID.toUpperCase()}}
   </h3>
   <MessagesList :user-i-d="userName" :messages="messages"/>
-  <MessageForm :faculty-name="facultyName" :course-i-d="courseID" :username="userName" />
+  <MessageForm :faculty-name="facultyName"
+               :course-i-d="courseID"
+               :email="userName"
+               @addText="addText"
+  />
 </template>
 
 <script>
@@ -14,19 +18,29 @@ import CourseInfo from '@/components/CourseInfo.vue'
 import {MessageRestController} from '@/components/Messages/MessageHandling'
 import axios from "axios";
 import VueCookies from 'vue-cookies';
+import {toRaw} from "vue";
 
 export default {
   name: 'DiscussionView',
+  methods: {
+    addText(text){
+      this.messages.push({
+        email:this.userName,
+        text:text,
+        time: new Date()
+      });
+    }
+  },
   components: {
     MessageForm,
     MessagesList,
   },
   beforeMount() {
     const courseJSON = this.$cookies.get("course");
-    console.log(courseJSON);
-
     this.userName = this.$cookies.get('username');
-    console.log(this.userName);
+
+    this.facultyName = courseJSON["courseDept"];
+    this.courseID = courseJSON["courseNumber"];
   },
   mounted(){
     (MessageRestController.getMessage(this.facultyName, this.courseID)).then((data)=>{
@@ -41,7 +55,8 @@ export default {
       messages:[],
       userName:''
       }
-    }
+    },
+
 
 }
 </script>
