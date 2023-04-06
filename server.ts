@@ -178,10 +178,12 @@ app.get(MESSAGE_URL, (request, response) => {
     }
 
 
-    const sql = 'SELECT * FROM messages'
+    const sql = 'SELECT * FROM ('
+        + 'SELECT * from messages'
         + ' WHERE (facultyName = ? AND courseID = ?)'
-        + ' ORDER BY time'
-        + ' LIMIT ?';
+        + ' ORDER BY time DESC'
+        + ' LIMIT ?) AS T1'
+        + ' ORDER BY time';
     pool.query(sql, requiredParams, (error, rows) => {
         if (error) {
             response.sendStatus(500);
