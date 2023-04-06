@@ -1,5 +1,7 @@
 <template>
-  <ChatsList/>
+  <div class="courses">
+    <ChatsList/>
+  </div>
 </template>
 
 <script>
@@ -13,3 +15,12 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+.courses {
+    margin-top: 100px;
+    border: 2px solid black;
+    display: inline-block;
+    width: 75%;
+}
+</style>
