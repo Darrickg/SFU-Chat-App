@@ -64,6 +64,7 @@ import {Courses} from "@/functions/sfuAPI/courses";
 import {getDepartmentName, getTermInfo} from "@/functions/sfuAPI/termInfoFunctions";
 import {VAutocomplete, VCombobox} from "vuetify/components";
 import {de} from "vuetify/locale";
+import axios from 'axios';
 
 export default {
   name: "CourseChoosing",
