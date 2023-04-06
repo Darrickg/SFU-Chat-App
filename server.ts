@@ -335,25 +335,28 @@ app.post(SECTION_URL, (request, response) => {
 //websocket
 let server=http.createServer(app);
 //const {Server}=require('socket.io');
-const io=require('socket.io')('http');
+const io=require('socket.io')(http);
 let onlineUsers=0;
 
 io.on('connection', function(socket:any){
     console.log("User connected");
     onlineUsers++;
-    socket.emit('userChange',onlineUsers);
-    socket.broadcast.emit('userChange',onlineUsers);
+    console.log("Users:"+onlineUsers);
+    //socket.emit('userChange',onlineUsers);
+    //socket.broadcast.emit('userChange',onlineUsers);
 
     socket.on('disconnect', function(){
         console.log("User disconnected");
         onlineUsers--;
-        socket.broadcast.emit('userChange',onlineUsers);
+        console.log("Users:"+onlineUsers);
+        //socket.broadcast.emit('userChange',onlineUsers);
     });
 
-    socket.on('message', async(message:Message)=>{//:Message ?
+    socket.on('newMessage', async(message:Message)=>{//:Message ?
         const msg:Message=message;
+        console.log(msg);
         //await pool.query(msg);
-        socket.broadcast.emit('message',message);
+        //socket.broadcast.emit('message',message);
     })
 });
 
@@ -365,7 +368,7 @@ io.on('connection', function(socket:any){
     time: new Date,
     text: request.body.text
 };*/
-
+console.log("hate everything.");
 server.listen(8080,()=>{
     console.log("Server listening on port 8080")
 });
