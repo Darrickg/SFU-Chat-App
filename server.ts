@@ -209,11 +209,11 @@ app.post(MESSAGE_URL, (request, response) => {
     }
 
     const message: Message = {
-        email: request.query.email,
-        courseID: request.query.courseID,
-        facultyName: request.query.facultyName,
+        email: request.query.email as string,
+        courseID: request.query.courseID as string,
+        facultyName: request.query.facultyName as string,
         time: new Date,
-        text: request.query.text
+        text: request.query.text as string
     };
 
     const sql = 'INSERT INTO messages SET ?';
