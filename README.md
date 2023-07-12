@@ -1,4 +1,4 @@
-# sfu-chat
+# sfu-chat-app
 
 ## About
 This project was created as part of the course CMPT 372: Web Development II. 
